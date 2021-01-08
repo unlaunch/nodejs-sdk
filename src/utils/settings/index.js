@@ -4,7 +4,7 @@ import { merge } from "../../../src/utils/lang/index.js";
 const base = {
   core:{
     sdkKey:'',
-    host:'http://app.unlaunch.io/'
+    host:'https://api-qa.unlaunch.io'
   },
   intervals: {
     // fetch feature updates each 30 sec

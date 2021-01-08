@@ -15,7 +15,6 @@ export function UnlaunchFactory(configurations) {
     store.set(CONFIGURATIONS, configs);
     store.set(READY, true);
 
-    console.log(store.getAll())
     if (!configs.core.sdkKey) {
         throw ('Factory intantiation requires a valid sdk key');
     } else {
@@ -26,8 +25,8 @@ export function UnlaunchFactory(configurations) {
     return {
         client() {
             console.info('New client instance created.');
-            return ulClient(configs);
+            return ulClient(configs,store).client();
         },
-        logger: 'Logger' // add it later
+        logger: 'Logger' // ::TODO
     }
 } 

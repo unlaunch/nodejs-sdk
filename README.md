@@ -1,6 +1,7 @@
-import {UnlaunchFactory} from '../src/client/ulFactory.js';
+### Example to use Node.js SDK
 
-var factory = UnlaunchFactory({
+```$xslt
+let factory = UnlaunchFactory({
     core:{
         sdkKey:'prod-sdk-9b6cf021-a1b5-4b30-9b39-533bb0c9f4b3'
         },
@@ -24,4 +25,9 @@ client.once('READY',()=> {
     console.log("variation served: "+ variation)
     
 });
-  
+```
+### Steps to run
+
+1. npm install
+
+2. npm start
