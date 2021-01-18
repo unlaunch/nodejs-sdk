@@ -13,7 +13,7 @@ export function UnlaunchFactory(configurations) {
     const store = new Store();
     const configs = ConfigsFactory(configurations);
     store.set(CONFIGURATIONS, configs);
-    store.set(READY, true);
+    store.set(READY, false);
 
     if (!configs.core.sdkKey) {
         throw ('Factory intantiation requires a valid sdk key');

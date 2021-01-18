@@ -12,9 +12,13 @@ const base = {
     // publish metrics each 120 sec
     metricsFlushInterval: 120,
     // flush events every 60 seconds after the first flush
-    eventsFlushInterval: 60,
+    eventsFlushInterval: 40,
     // http connection timeout 
-    httpConnectionTimeout: 10
+    httpConnectionTimeout: 10,
+  },
+  size:{
+    eventsCapacity: 10000,
+    metricsCapacity: 10000
   },
   mode: {
     offlineMode: false
@@ -24,7 +28,9 @@ const base = {
     // CDN having all the information for your environment
     sdk: '/api/v1/flags',
     // Storage for your SDK events
-    events: '/api/v1/events'
+    events: '/api/v1/events',
+    // Storage for your SDK impressions
+    impressions:'/api/v1/impressions'
   },
 
 };
