@@ -2,30 +2,44 @@ import chai from 'chai';
 import stringApply from '../src/engine/attributes/string.js'
 const assert = chai.assert;
 
+const flagString = 'ahiman';
+
 describe('String Operators test', () => {
-    it('string EQ op should return true', function () {
-        assert.equal(stringApply("testString", "testString", 'EQ'), true)
+    it('string EQ op should macth', function () {
+        assert.equal(stringApply(flagString, "ahiman", 'EQ'), true)
     })
-    it('string NEQ op should return true', function () {
-        assert.equal(stringApply("testString", "testString", 'NEQ'), false)
+    it('string NEQ op should match', function () {
+        assert.equal(stringApply(flagString, "abc", 'NEQ'), true)
     })
-    it('string CON op should return true', function () {
-        assert.equal(stringApply("testString", "test", 'CON'), true)
+    it("string CON op shouldn't match", function () {
+        assert.equal(stringApply(flagString, "abc", 'CON'), false)
     })
-    it('string NCON op should return true', function () {
-        assert.equal(stringApply("testString", "abc", 'NCON'), true)
+    it("string CON op should match", function () {
+        assert.equal(stringApply(flagString, "fishisahiman", 'CON'), true)
     })
-    it('string SW op should return true', function () {
-        assert.equal(stringApply("testString", "t", 'SW'), true)
+    it("string CON op should match", function () {
+        assert.equal(stringApply(flagString, "this also contains ahiman so it should match", 'CON'), true)
     })
-    it('string EW op should return true', function () {
-        assert.equal(stringApply("testString", "g", 'EW'), true)
+    it('string NCON op should match', function () {
+        assert.equal(stringApply(flagString, "doesntcontain", 'NCON'), true)
     })
-    it('string NSW op should return true', function () {
-        assert.equal(stringApply("testString", "abc", 'NSW'), true)
+    it('string SW op should match', function () {
+        assert.equal(stringApply(flagString, "ahimanatstart", 'SW'), true)
     })
-    it('string NEW op should return true', function () {
-        assert.equal(stringApply("testString", "xyz", 'NEW'), true)
+    it('string NSW op should match', function () {
+        assert.equal(stringApply(flagString, "noahimanatstart", 'NSW'), true)
+    })
+    it('string EW op should match', function () {
+        assert.equal(stringApply(flagString, "endswithahiman", 'EW'), true)
+    })
+    it('string NEW op should match', function () {
+        assert.equal(stringApply(flagString, "doesntendswithahiman", 'NEW'), false)
+    })
+    it("null string shouldn't match", function () {
+        assert.equal(stringApply(flagString, null, 'SW'), false)
+    })
+    it("empty string shouldn't match", function () {
+        assert.equal(stringApply(flagString, "", 'EW'), false)
     })
 
 })

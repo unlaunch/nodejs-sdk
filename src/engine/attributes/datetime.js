@@ -1,15 +1,15 @@
 export default function dateOrDateTimeApply(val, userVal, op, discardTime){
 	// This is the value in Java
 	// v = strconv.ParseInt(val.(string), 10, 64)
-	let v = javaTimeToEpoch(v)
+	let v = val
 
 	let uv = userVal
 
 	if(discardTime){
-		v = tsWithZeroTime(v)
-		uv = tsWithZeroTime(uv)
+		v = tsWithZeroTime(val)
+		uv = tsWithZeroTime(userVal)
 	}
-
+	
 	if(uv == null) {
 		// TODO log warning that name matches but type is not right
 		return false
@@ -38,7 +38,7 @@ function javaTimeToEpoch(ts){
 }
 
 function tsWithZeroTime(ts){
-    var d = new Date(ts*1000);
-    d.setHours(0,0,0,0);
-    return d.getUTCMilliseconds();
+	var d = new Date(Number(ts));
+	d.setHours(0,0,0,0);
+    return d.getTime();
 }

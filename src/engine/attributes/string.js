@@ -11,21 +11,21 @@ export default function stringApply(val, userVal, op) {
 
     if (op == "EQ") {
         console.log('EQ')
-        return v == userVal
+        return uv == v 
     } else if (op == "NEQ") {
-        return v != userVal
+        return uv != v
     } else if (op == "SW") {
-        return startsWith(v, uv)
+        return startsWith(uv, v)
     } else if (op == "NSW") {
-        return !startsWith(v, uv)
+        return !startsWith(uv, v)
     } else if (op == "EW") {
-        return endsWith(v, uv, true)
+        return endsWith(uv, v, true)
     } else if (op == "NEW") {
-        return !endsWith(v, uv, true)
+        return !endsWith(uv, v, true)
     } else if (op == "CON") {
-        return v.includes(uv)
+        return uv.includes(v)
     } else if (op == "NCON") {
-        return !v.includes(uv)
+        return !uv.includes(v)
     }
 
     // Todo log invalid op warning
