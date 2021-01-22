@@ -13,7 +13,7 @@ class CountCache {
         const eventsCount = store.get(EVENTS_COUNT);
 
         this.onFullQueue = false;
-        this.maxQueue = settings.size.metricsCapacity;
+        this.maxQueue = settings.size.metricsQueueSize;
         if (eventsCount && eventsCount.length > 0) {
             this.queue = eventsCount;
             this.queueSize = eventsCount.length;
@@ -65,7 +65,7 @@ class CountCache {
         }
 
         this.store.set(EVENTS_COUNT, eventsCount)
-        console.log('Store count:',this.store.get(EVENTS_COUNT));
+        // console.log('Store count:',this.store.get(EVENTS_COUNT));
 
         // this._checkForFlush();
 

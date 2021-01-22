@@ -15,8 +15,6 @@ export function UlProcessor(config, store) {
                     cb(null, { initialized: true })
 
                 }).catch((err) => {
-                    console.log('here')
-                    console.error(`Error - ${err.message}`);
                     cb(err, null)
                     
                 })

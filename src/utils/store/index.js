@@ -1,5 +1,5 @@
 import objectAssign from 'object-assign'
-
+import logger from "../logger/logger.js";
 
 
 class Store {
@@ -32,10 +32,10 @@ class Store {
     if (flags && Object.keys(flags).length > 0) {
       const index = flags ? flags.findIndex((flag) => flag.key == key) : '-1';
       if (index >= 0) {
-        console.log('Flag found in store');
+        logger.info('Flag found in store');
         return (flags[index])
       } else {
-        console.log('Flag not found in store');
+        logger.info('Flag not found in store');
         return {}
       }
     } else {
@@ -52,7 +52,7 @@ class Store {
   //   if(this.get(flags)){
 
   //   } else {
-  //     console.log("flag was not found in local storage");
+  //     logger.info("flag was not found in local storage");
   //     return {}
   //   }
   // }

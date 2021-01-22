@@ -14,7 +14,7 @@ class EventsCache {
         const events = store.get(EVENTS);
 
         this.onFullQueue = false;
-        this.maxQueue = settings.size.eventsCapacity;
+        this.maxQueue = settings.size.eventsQueueSize;
         if (events && events.length > 0) {
             this.queue = events;
             this.queueSize = events.length;
@@ -51,7 +51,7 @@ class EventsCache {
         }
 
         this.store.set(EVENTS, events)
-        console.log('Store events:', this.store.get(EVENTS));
+        // console.log('Store events:', this.store.get(EVENTS));
 
         // this._checkForFlush();
 

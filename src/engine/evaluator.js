@@ -1,16 +1,16 @@
 import UnlaunchFeature from "../../src/dtos/UlFeature.js";
 import { apply } from "../../src/engine/targeting.js";
 import { isObject } from "../../src/utils/lang/index.js";
-import mmh3 from 'murmurhash3'
+import mmh3 from 'murmurhash3';
 
-export function evaluate(flag, identity, attributes = {}) {
+export function evaluate(flag, identity, attributes = {},logger) {
     let result = new UnlaunchFeature();
     result.feature = flag.key
     result.variation = 'control'
     result.evaluationReason = "Evaluation is not yet complete"
 
     if (flag.state !== "ACTIVE") {
-        result.evaluationReason = "Flag disabled. Default Variation served"
+        result.evaluationReason = "Flag disabled. Default Variation served."
         const offVariation = getOffVariation(flag)
         result.variation = offVariation
         return result;
@@ -18,7 +18,7 @@ export function evaluate(flag, identity, attributes = {}) {
         let variation = variationIfUserInAllowList(flag, identity);
         if (variation != null) {
             result.variation = variation
-            result.evaluationReason = "User is in Target Users List"
+            result.evaluationReason = "User is in Target Users List."
             return result;
         } else {
             let {variation,priority} = matchTargetingRules(flag, identity, attributes);
@@ -29,11 +29,11 @@ export function evaluate(flag, identity, attributes = {}) {
             } else {
                 variation = getDefaultRule(flag, identity)
                 if (variation != null) {
-                    result.evaluationReason = "Default Variation served"
+                    result.evaluationReason = "Default Rule served."
                     result.variation = variation
                     return result;
                 } else {
-                    result.evaluationReason = "Error evaluating SDK"
+                    result.evaluationReason = "Error evaluating SDK."
                     result.variation = 'control'
                     return result;
                 }
@@ -50,7 +50,7 @@ function getOffVariation(flag) {
     if (index >= 0) {
         return flag.variations[index].key;
     } else {
-        console.log('OffVariation not found');
+        logger.info('OffVariation not found');
     }
 }
 
@@ -118,7 +118,7 @@ function matchTargetingRules(flag, identity, attributes) {
 
 function bucket(key) {
     const hashValue = mmh3.murmur32Sync(key);
-    // console.log("Bucket num:",Math.abs(hashValue % 100) + 1)
+    // logger.info("Bucket num:",Math.abs(hashValue % 100) + 1)
     return (Math.abs(hashValue % 100) + 1)
 }
 
@@ -158,7 +158,7 @@ function getVariationIdBySplit(splits, bucketNum) {
     }
 
     if (index >= 0) return splits[index].variationId
-    console.log("Variation By Split Not Found")
+    logger.info("Variation By Split Not Found")
     return null;
 }
 
@@ -166,7 +166,6 @@ function getVariationIdBySplit(splits, bucketNum) {
 function getVariationById(flag, variationId) {
 
     const index = flag.variations.findIndex(v => v.id == variationId);
-    // console.log("FOUND:",flag.variations[index].key)
     if (index >= 0) return flag.variations[index].key
     else return null
 }

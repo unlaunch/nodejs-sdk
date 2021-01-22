@@ -1,23 +1,34 @@
 import Store from '../utils/store/index.js';
 import EventEmitter from 'events';
-// import { UlProcessor } from "../processor/ulProcessor.js";
+//processors
 import PollingProcessor from "../processor/pollingProcessor.js";
+import OfflineProcessor from "../processor/offlineProcessor.js";
 import EventProcessor from "../events/eventProcessor.js";
+import OfflineEventProcessor from "../events/offlineEventProcessor.js";
+//cache
 import EventsCache from "../storage/eventsCache/InMemory.js";
 import CountCache from "../storage/countCache/InMemory.js";
+//engine
 import { evaluate } from '../engine/evaluator.js';
+//utils
 import { isObject } from "../../src/utils/lang/index.js";
+//dtos
 import Event from "../dtos/Events.js";
 import Impression from "../dtos/Impression.js";
 
-export function ulClient(config, store) {
+/**
+ * Unlaunch Client 
+**/
+export function ulClient(configs, store) {
 
     const newUnlaunchClient = function () {
         const client = new EventEmitter();
-        const processor = PollingProcessor(config, store);
-        const eventProcessor = EventProcessor(config, store);
+        const offlineMode = configs.mode.offlineMode;
+        const processor = offlineMode ? OfflineProcessor() : PollingProcessor(configs, store);
+        const eventProcessor = offlineMode ? OfflineEventProcessor() : EventProcessor(configs, store);
         const eventsCache = new EventsCache(store);
         const countCache = new CountCache(store);
+
         processor
             .start((err, res) => {
                 client.emit('READY')
@@ -35,27 +46,32 @@ export function ulClient(config, store) {
          * @param {string} identity 
          * @param {object} attributes 
          */
-        client.variation = (flagKey, identity, attributes = {}) => {
 
+        client.variation = (flagKey, identity, attributes = {}) => {
             if (flagKey == undefined || flagKey.length < 0) {
-                console.error('Please provide valid flagKey');
+                configs.logger.error('Please provide valid flagKey');
                 return "control";
             }
 
             if (identity == undefined || identity.length < 0) {
-                console.error('Please provide valid identity')
+                configs.logger.error('Please provide valid identity')
                 return "control";
             }
 
             if (attributes && !isObject(attributes)) {
-                console.error('Please provide valid attributes')
+                configs.logger.error('Please provide valid attributes')
+                return "control";
+            }
+
+            if (offlineMode) {
+                configs.logger.info('Offline mode selected - Control served')
                 return "control";
             }
 
             const flag = store.getFeature(flagKey);
 
             if (Object.keys(flag).length > 0 && flag.constructor === Object) {
-                const ulFeature = evaluate(flag, identity, attributes);
+                const ulFeature = evaluate(flag, identity, attributes,configs.logger);
                 if (ulFeature.variation != '' && ulFeature.variation != 'control') {
                     // record count
                     countCache.trackCount(flagKey, ulFeature.variation)
@@ -78,14 +94,20 @@ export function ulClient(config, store) {
                     )
                     eventsCache.track(event)
                 }
-                console.log("Flag evaluation reason: ", ulFeature.evaluationReason);
+
+                configs.logger.info(`Flag evaluation reason: ${ulFeature.evaluationReason}`);
 
                 return ulFeature.variation;
             } else {
-                console.log(`Error - Flag- ${flagKey} not found`);
+                configs.logger.error(`Error - Flag- ${flagKey} not found`);
                 return "control";
             }
         }
+
+        /**
+        * Shutdown to flush events if any and to stop processors
+        **/
+
         client.shutdown = () => {
             processor.close()
             eventProcessor.close()

@@ -1,7 +1,7 @@
 import "../../../src/engine/helper/setMatcher.js";
 import { convertToString } from "../../../src/utils/lang/index.js";
 
-export default function setApply(val, userVal, op){
+export default function setApply(val, userVal, op, logger){
 
 	let vals = convertToString(val)
 	const ruleSet = new Set();
@@ -48,6 +48,6 @@ export default function setApply(val, userVal, op){
 	}
 
 	// Todo log invalid op warning
-	console.log('Invalid operator')
+	logger.info('Invalid operator')
 	return false
 }

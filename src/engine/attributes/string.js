@@ -1,16 +1,15 @@
 import { convertToString, startsWith, endsWith } from "../../../src/utils/lang/index.js";
 
-export default function stringApply(val, userVal, op) {
+export default function stringApply(val, userVal, op, logger) {
     let v = val
     let uv = convertToString(userVal);
     
     if(!uv){
-        console.log('Attribute is not a valid string')
+        logger.log('Attribute is not a valid string')
         return false;
     }
 
     if (op == "EQ") {
-        console.log('EQ')
         return uv == v 
     } else if (op == "NEQ") {
         return uv != v

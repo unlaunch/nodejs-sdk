@@ -8,7 +8,6 @@ import Store from '../utils/store/index.js';
 import {CONFIGURATIONS,READY} from '../utils/store/constants.js';
 import {ulClient} from '../client/ulClient.js'
 
-
 export function UnlaunchFactory(configurations) {
     const store = new Store();
     const configs = ConfigsFactory(configurations);
@@ -18,15 +17,14 @@ export function UnlaunchFactory(configurations) {
     if (!configs.core.sdkKey) {
         throw ('Factory intantiation requires a valid sdk key');
     } else {
-        if (!validateApiKey(configs.core.sdkKey)) {
+        if (!validateApiKey(configs.core.sdkKey,configs.logger)) {
             throw ('Client intantiation requires a valid sdk key');
         }
     }
     return {
         client() {
-            console.info('New client instance created.');
+            configs.logger.info('New Unlaunch client instance created.');
             return ulClient(configs,store).client();
-        },
-        logger: 'Logger' // ::TODO
+        }, 
     }
 } 
