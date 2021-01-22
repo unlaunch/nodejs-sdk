@@ -1,11 +1,11 @@
 import { convertToString, startsWith, endsWith } from "../../../src/utils/lang/index.js";
 
-export default function stringApply(val, userVal, op, logger) {
+export default function stringApply(val, userVal, op) {
     let v = val
     let uv = convertToString(userVal);
     
     if(!uv){
-        logger.log('Attribute is not a valid string')
+        // logger.log('Attribute is not a valid string')
         return false;
     }
 
