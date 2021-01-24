@@ -15,6 +15,8 @@ import { isObject } from "../../src/utils/lang/index.js";
 //dtos
 import Event from "../dtos/Events.js";
 import Impression from "../dtos/Impression.js";
+//constants
+import { READY } from '../utils/store/constants.js';
 
 /**
  * Unlaunch Client 
@@ -31,7 +33,8 @@ export function ulClient(configs, store) {
 
         processor
             .start((err, res) => {
-                client.emit('READY')
+                store.set(READY,true);
+                client.emit('READY')                
                 if (err) {
                     return "control";
                 }
@@ -48,6 +51,8 @@ export function ulClient(configs, store) {
          */
 
         client.variation = (flagKey, identity, attributes = {}) => {
+            const isReady = store.get(READY);
+
             if (flagKey == undefined || flagKey.length < 0) {
                 configs.logger.error('Please provide valid flagKey');
                 return "control";
@@ -58,7 +63,7 @@ export function ulClient(configs, store) {
                 return "control";
             }
 
-            if (attributes && !isObject(attributes)) {
+            if (!attributes) {
                 configs.logger.error('Please provide valid attributes')
                 return "control";
             }
@@ -68,10 +73,17 @@ export function ulClient(configs, store) {
                 return "control";
             }
 
+            if (!isReady) {
+                configs.logger.warn("The SDK is not ready. Returning the SDK default 'control' "+
+                            "as variation which may not give " +
+                            "the right result");
+                return "control";
+            }
+
             const flag = store.getFeature(flagKey);
 
             if (Object.keys(flag).length > 0 && flag.constructor === Object) {
-                const ulFeature = evaluate(flag, identity, attributes,configs.logger);
+                const ulFeature = evaluate(flag, identity, attributes, configs.logger);
                 if (ulFeature.variation != '' && ulFeature.variation != 'control') {
                     // record count
                     countCache.trackCount(flagKey, ulFeature.variation)

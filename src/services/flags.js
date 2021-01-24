@@ -27,7 +27,14 @@ const getFlags = async (host, sdkKey, httpTimeout, logger) => {
             return body.data.flags;
         } else if (res.status == 304) {
             logger.info('Polled server but there were no new changes')
-        } else {
+        } else if(res.status == 403){
+            logger.info(
+                "The SDK key you provided was rejected by the server and no data was " +
+                "returned. All variation evaluations will return 'control'. You must use the correct " +
+                "SDK key for the project and environment you're connecting to. For more " +
+                "information on how to obtain right SDK keys, see: " +
+                "https://docs.unlaunch.io/docs/sdks/sdk-keys")
+        }else {
             throw new Error(body.data);
         }
     } catch (error) {
