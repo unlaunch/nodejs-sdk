@@ -1,10 +1,9 @@
 {
   "name": "unlaunch-node-sdk",
   "version": "0.0.1",
-  "description": "",
-  "main": "src/index.js",
+  "description": "LaunchDarkly Server-Side SDK for Node.js",
+  "main": "src/client/client.js",
   "scripts": {
-    "start": "node --no-warnings src/index.js",
     "test": "mocha"
   },
   "type": "module",
