@@ -9,7 +9,7 @@ export function validateApiKey(maybeApiKey, logger) {
     logger.log('Factory instantiation: you passed a null or undefined api_key, api_key must be a non-empty string.');
     //log.error  
    } else if (isString(maybeApiKey)) {
-    if (maybeApiKey.length > 0)
+    if (maybeApiKey.length > 0){
       apiKey = maybeApiKey;
       if (apiKey.includes("-mob-")) {
         logger.warn("You are using 'Mobile / App SDK Key'. The SDK will only be able to download flags that " +
@@ -22,6 +22,7 @@ export function validateApiKey(maybeApiKey, logger) {
                 "servers, use the 'Server Key' to fetch all features flags. "+
                 CONSTANTS.SDK_KEY_HELP_MSG);
     }
+      }
     else
       logger.error('Factory instantiation: you passed an empty api_key, api_key must be a non-empty string.');
   } else {

@@ -28,9 +28,9 @@ export function UnlaunchFactory(configurations) {
                                   `sdkKey = ${configs.core.sdkKey},\n\t`+ 
                                   `pollingInterval = ${configs.intervals.pollingInterval} milliseconds,\n\t`+
                                   `httpConnectionTimeout = ${configs.intervals.httpConnectionTimeout} milliseconds,\n\t`+
-                                  `metricsFlushInterval = ${configs.intervals.metricsFlushInterval} seconds,\n\t`+
+                                  `metricsFlushInterval = ${configs.intervals.metricsFlushInterval} milliseconds,\n\t`+
                                   `metricsQueueSize = ${configs.size.metricsQueueSize},\n\t`+
-                                  `eventsFlushInterval = ${configs.intervals.eventsFlushInterval},\n\t`+ 
+                                  `eventsFlushInterval = ${configs.intervals.eventsFlushInterval} milliseconds,\n\t`+ 
                                   `eventsQueueSize = ${configs.size.eventsQueueSize}\n\t`+
                                   `]`)
             return ulClient(configs, store).client();

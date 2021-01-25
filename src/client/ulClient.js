@@ -13,6 +13,7 @@ import { evaluate } from '../engine/evaluator.js';
 //utils
 import { isObject } from "../../src/utils/lang/index.js";
 //dtos
+import UlFeature from "../dtos/UlFeature.js";
 import Event from "../dtos/Events.js";
 import Impression from "../dtos/Impression.js";
 //constants
@@ -33,10 +34,14 @@ export function ulClient(configs, store) {
 
         processor
             .start((err, res) => {
-                store.set(READY,true);
-                client.emit('READY')                
+                store.set(READY, true);
+                client.emit('READY')
                 if (err) {
-                    return "control";
+                    return new UlFeature(
+                        "control",
+                        "Sdk was not ready - Control served",
+                        ""
+                    )
                 }
             })
 
@@ -51,33 +56,73 @@ export function ulClient(configs, store) {
          */
 
         client.variation = (flagKey, identity, attributes = {}) => {
+            return evaluateFlag(flagKey,identity,attributes).variation;
+        }
+
+
+        /**
+         * Feature method to get feature object containing evaluation reason and variation
+         * @param {string} flagKey 
+         * @param {string} identity 
+         * @param {object} attributes 
+         */
+
+        client.feature = (flagKey, identity, attributes = {}) => {
+            return evaluateFlag(flagKey,identity,attributes);
+        }
+
+        
+        /**
+         *  Evaluate flag and emit metrics
+         */
+        const evaluateFlag=(flagKey,identity,attributes)=>{
             const isReady = store.get(READY);
 
-            if (flagKey == undefined || flagKey.length < 0) {
+            if (flagKey == undefined || flagKey.length <= 0) {
                 configs.logger.error('Please provide valid flagKey');
-                return "control";
+                return new UlFeature(
+                    "control",
+                    "Feature key was empty string. You must provide the key of the feature flag to evaluate",
+                    flagKey
+                )
             }
 
-            if (identity == undefined || identity.length < 0) {
+            if (identity == undefined || identity.length <= 0) {
                 configs.logger.error('Please provide valid identity')
-                return "control";
+                return new UlFeature(
+                    "control",
+                    "Identity was empty string. You must provide a unique value per user",
+                    flagKey
+                )
             }
 
-            if (!attributes) {
+            if (attributes && Object.keys(attributes).length > 0 && !isObject(attributes)) {
                 configs.logger.error('Please provide valid attributes')
-                return "control";
+                return new UlFeature(
+                    "control",
+                    "You must provide valid attribute",
+                    flagKey
+                )
             }
 
             if (offlineMode) {
                 configs.logger.info('Offline mode selected - Control served')
-                return "control";
+                return new UlFeature(
+                    "control",
+                    "Offline mode selected - Control served",
+                    flagKey
+                )
             }
 
             if (!isReady) {
-                configs.logger.warn("The SDK is not ready. Returning the SDK default 'control' "+
-                            "as variation which may not give " +
-                            "the right result");
-                return "control";
+                configs.logger.warn("The SDK is not ready. Returning the SDK default 'control' " +
+                    "as variation which may not give " +
+                    "the right result");
+                return new UlFeature(
+                    "control",
+                    "Sdk was not ready - Control served",
+                    flagKey
+                )
             }
 
             const flag = store.getFeature(flagKey);
@@ -107,12 +152,16 @@ export function ulClient(configs, store) {
                     eventsCache.track(event)
                 }
 
-                configs.logger.info(`Flag evaluation reason: ${ulFeature.evaluationReason}`);
+                // configs.logger.info(`Flag evaluation reason: ${ulFeature.evaluationReason}`);
 
-                return ulFeature.variation;
+                return ulFeature;
             } else {
                 configs.logger.error(`Error - Flag- ${flagKey} not found`);
-                return "control";
+                return new UlFeature(
+                    "control",
+                    "Feature flag was not found in memory",
+                    flagKey
+                )
             }
         }
 
