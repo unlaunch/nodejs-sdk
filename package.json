@@ -2,7 +2,7 @@
   "name": "unlaunch-node-sdk",
   "version": "0.0.1",
   "description": "Unlaunch Server-Side SDK for Node.js",
-  "main": "src/client/client.js",
+  "main": "src/client/ulFactory.js",
   "scripts": {
     "test": "mocha"
   },
