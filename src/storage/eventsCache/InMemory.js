@@ -51,7 +51,7 @@ class EventsCache {
         }
 
         this.store.set(EVENTS, events)
-        // console.log('Store events:', this.store.get(EVENTS));
+        // logger.info('Store events:', this.store.get(EVENTS));
 
         // this._checkForFlush();
 

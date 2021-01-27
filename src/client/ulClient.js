@@ -56,7 +56,7 @@ export function ulClient(configs, store) {
          */
 
         client.variation = (flagKey, identity, attributes = {}) => {
-            return evaluateFlag(flagKey,identity,attributes).variation;
+            return evaluateFlag(flagKey, identity, attributes).variation;
         }
 
 
@@ -68,14 +68,14 @@ export function ulClient(configs, store) {
          */
 
         client.feature = (flagKey, identity, attributes = {}) => {
-            return evaluateFlag(flagKey,identity,attributes);
+            return evaluateFlag(flagKey, identity, attributes);
         }
 
-        
+
         /**
          *  Evaluate flag and emit metrics
          */
-        const evaluateFlag=(flagKey,identity,attributes)=>{
+        const evaluateFlag = (flagKey, identity, attributes) => {
             const isReady = store.get(READY);
 
             if (flagKey == undefined || flagKey.length <= 0) {
@@ -170,8 +170,8 @@ export function ulClient(configs, store) {
         **/
 
         client.shutdown = () => {
-            processor.close()
             eventProcessor.close()
+            processor.close()
         }
 
         return client;

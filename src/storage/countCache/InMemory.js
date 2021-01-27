@@ -65,7 +65,7 @@ class CountCache {
         }
 
         this.store.set(EVENTS_COUNT, eventsCount)
-        // console.log('Store count:',this.store.get(EVENTS_COUNT));
+        // logger.info('Store count:',this.store.get(EVENTS_COUNT));
 
         // this._checkForFlush();
 

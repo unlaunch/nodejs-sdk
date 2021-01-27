@@ -10,12 +10,14 @@ export default function EventsProcessor(config, storage) {
   let settings = storage.get(CONFIGURATIONS)
   let eventsPublishId = false;
   let countPublishId = false;
-  const eventsCount = storage.get(EVENTS_COUNT);
-  const events = storage.get(EVENTS);
+  let closeProcessor = false;
+  let eventsCount = storage.get(EVENTS_COUNT);
+  let events = storage.get(EVENTS);
 
   const pushCounts = () => {
 
     const startTime = new Date().getTime();
+    eventsCount = storage.get(EVENTS_COUNT);
 
     if (!eventsCount) {
       flushCountAfterSleep(startTime)
@@ -44,15 +46,16 @@ export default function EventsProcessor(config, storage) {
       postMetrics(
         settings.core.host,
         settings.core.sdkKey,
+        settings.intervals.httpConnectionTimeout,
         data,
         config.logger
       ).then(res => {
         storage.set(EVENTS_COUNT, []) // we always clear the queue.
-        flushCountAfterSleep(startTime)
       }).catch(err => {
-        flushCountAfterSleep(startTime)
       })
     }
+    
+    !closeProcessor && flushCountAfterSleep(startTime)
 
   }
 
@@ -68,6 +71,8 @@ export default function EventsProcessor(config, storage) {
 
   const pushEvents = () => {
     const startTime = new Date().getTime();
+    events = storage.get(EVENTS);
+
     if (!events) {
       flushEventsAfterSleep(startTime)
       return Promise.resolve;
@@ -79,16 +84,17 @@ export default function EventsProcessor(config, storage) {
       postImpressions(
         settings.core.host,
         settings.core.sdkKey,
+        settings.intervals.httpConnectionTimeout,
         events,
         config.logger
       ).then(res => {
         storage.set(EVENTS, []) // we always clear the queue.
-        flushEventsAfterSleep(startTime)
       }).catch(err => {
-        flushEventsAfterSleep(startTime)
       })
     }
 
+    !closeProcessor && flushEventsAfterSleep(startTime)
+      
   }
 
   const flushEventsAfterSleep = (startTime) => {
@@ -102,6 +108,10 @@ export default function EventsProcessor(config, storage) {
   }
 
   const close = () => {
+    closeProcessor = true;
+    eventsCount = storage.get(EVENTS_COUNT);
+    events = storage.get(EVENTS);
+    
     if (eventsCount && eventsCount.length > 0) pushCounts();
     countPublishId && clearTimeout(countPublishId);
 
@@ -130,7 +140,7 @@ export default function EventsProcessor(config, storage) {
       countPublishId && clearTimeout(countPublishId);
       pushCounts();
 
-      countPublishId && clearTimeout(countPublishId);
+      eventsPublishId && clearTimeout(eventsPublishId);
       pushEvents();
     }
   };

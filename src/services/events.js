@@ -2,9 +2,8 @@ import fetch from 'node-fetch';
 import AbortController from 'abort-controller';
 import logger from "../utils/logger/logger.js";
 
-const postMetrics = async (host, sdkKey, events, httpTimeout, logger) => {
+const postMetrics = async (host, sdkKey, httpTimeout,events, logger) => {
     logger.info(`'POST': ${host}/api/v1/events`);
-    // console.log(`RES BODY: ${events}`)
     const controller = new AbortController();
 
     const timeout = setTimeout(() => {

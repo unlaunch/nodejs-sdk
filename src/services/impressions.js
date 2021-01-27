@@ -1,9 +1,8 @@
 import fetch from 'node-fetch';
 import AbortController from 'abort-controller';
 
-const postImpressions = async (host, sdkKey, data, logger) => {
+const postImpressions = async (host, sdkKey,httpTimeout, data, logger) => {
     logger.info(`'POST': ${host}/api/v1/impressions`);
-    // console.log(`RES BODY: ${data}`)
     const controller = new AbortController();
 
     const timeout = setTimeout(() => {
@@ -20,7 +19,6 @@ const postImpressions = async (host, sdkKey, data, logger) => {
         },
         body: JSON.stringify(data)
     })
- 
     if (res.status == 200) {
         logger.info('Successfully pushed impressions');
     } else {
