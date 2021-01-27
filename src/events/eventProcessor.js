@@ -70,31 +70,32 @@ export default function EventsProcessor(config, storage) {
   }
 
   const pushEvents = () => {
-    const startTime = new Date().getTime();
-    events = storage.get(EVENTS);
-
-    if (!events) {
-      flushEventsAfterSleep(startTime)
-      return Promise.resolve;
+    if(settings.sendImpression){
+      const startTime = new Date().getTime();
+      events = storage.get(EVENTS);
+  
+      if (!events) {
+        flushEventsAfterSleep(startTime)
+        return Promise.resolve;
+      }
+  
+      config.logger.info(`Pushing ${events.length} queued impression events.`);
+  
+      if (events.length > 0) {
+        postImpressions(
+          settings.core.host,
+          settings.core.sdkKey,
+          settings.intervals.httpConnectionTimeout,
+          events,
+          config.logger
+        ).then(res => {
+          storage.set(EVENTS, []) // we always clear the queue.
+        }).catch(err => {
+        })
+      }
+  
+      !closeProcessor && flushEventsAfterSleep(startTime)  
     }
-
-    config.logger.info(`Pushing ${events.length} queued impression events.`);
-
-    if (events.length > 0) {
-      postImpressions(
-        settings.core.host,
-        settings.core.sdkKey,
-        settings.intervals.httpConnectionTimeout,
-        events,
-        config.logger
-      ).then(res => {
-        storage.set(EVENTS, []) // we always clear the queue.
-      }).catch(err => {
-      })
-    }
-
-    !closeProcessor && flushEventsAfterSleep(startTime)
-      
   }
 
   const flushEventsAfterSleep = (startTime) => {

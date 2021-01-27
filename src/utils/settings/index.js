@@ -33,6 +33,7 @@ const base = {
     // Storage for your SDK impressions
     impressions:'/api/v1/impressions'
   },
+  sendImpression:false,
   logger: logger
 };
 
