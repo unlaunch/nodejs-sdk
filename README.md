@@ -19,7 +19,7 @@ let factory = UnlaunchFactory({
         },
     intervals: {
         // fetch feature updates each 30 sec
-        pollingInterval: 440,
+        pollingInterval: 30,
         // publish metrics each 120 sec
         metricsFlushInterval: 120,
         // flush events every 60 seconds after the first flush
@@ -51,9 +51,6 @@ Create a new tag on GitHub in the following format vx.y.z e.g. v0.0.1
 
 ## Submitting issues
 If you run into any problems, bugs, or have any questions or feedback, please report them using the [issues feature](https://github.com/unlaunch/nodejs-sdk/issues). We'll respond to all issues usually within 24 to 48 hours.
-
-## Contributing
-Please see [CONTRIBUTING](CONTRIBUTING.md) to find how you can contribute.
 
 ## License
 Licensed under the Apache License, Version 2.0. See: [Apache License](LICENSE.md).
