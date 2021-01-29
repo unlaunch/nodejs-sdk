@@ -7,7 +7,7 @@ Using the SDK, you can easily build Java applications that can evaluate feature 
 - To create feature flags to use with Java SDK, login to your Unlaunch Console at [https://app.unlaunch.io](https://app.unlaunch.io)
 - [Official Guide](https://docs.unlaunch.io/docs/sdks/nodejs-sdk)
 - [Documentation](https://github.com/unlaunch/nodejs-sdk#section-documentation)
-- [Example Project](https://github.com/unlaunch/hello-go)
+- [Example Project](https://github.com/unlaunch/hello-node)
 
 ## Getting Started
 Here is a simple example.
