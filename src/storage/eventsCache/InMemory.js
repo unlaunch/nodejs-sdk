@@ -4,8 +4,6 @@ import AsyncLock from 'async-lock';
 
 const lock = new AsyncLock();
 
-// const MAX_QUEUE_BYTE_SIZE = 5 * 1024 * 1024; // 5M
-
 class EventsCache {
 
     constructor(store) {
@@ -51,9 +49,6 @@ class EventsCache {
         }
 
         this.store.set(EVENTS, events)
-        // logger.info('Store events:', this.store.get(EVENTS));
-
-        // this._checkForFlush();
 
         return true;
     }

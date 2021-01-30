@@ -18,36 +18,33 @@ export default function setApply(val, userVal, op){
 	let i;
     
 	switch(op){
-	case "AO": // All of
+	case "AO": // All Of
 		return userValuesSet.isSuperSet(ruleSet)
 	case "NAO":
 		return !userValuesSet.isSuperSet(ruleSet)
-	case "HA": // Has any of
+	case "HA": // Has Any Of
 		i = userValuesSet.intersect(ruleSet)
 		return i.cardinality() > 0
-	case "NHA": // Not Has any of
-		 i = userValuesSet.intersect(ruleSet)
+	case "NHA": // Not Has Any Of
+		i = userValuesSet.intersect(ruleSet)
 		return i.cardinality() == 0
 	case "EQ": // Equals
 		return userValuesSet.equals(ruleSet)
-	case "NEQ": // Equals
+	case "NEQ": // Not Equals
 		return !userValuesSet.equals(ruleSet)
-	case "PO": // Part of
+	case "PO": // Part Of
 		if(userValuesSet.cardinality() < 1){
 			return false
 		}
 		return userValuesSet.isSubSet(ruleSet)
-	case "NPO": // Not Part of
+	case "NPO": // Not Part Of
 		if(userValuesSet.cardinality() < 1){
 			return false
 		}
 		return !userValuesSet.isSubSet(ruleSet)
 	default:
-		// Todo log invalid op warning
 		return false
 	}
 
-	// Todo log invalid op warning
-	// logger.info('Invalid operator')
 	return false
 }

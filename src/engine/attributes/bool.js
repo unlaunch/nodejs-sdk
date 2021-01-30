@@ -10,6 +10,5 @@ export default function boolApply(val, userVal , op ){
 		return uv != v
 	}
 
-    // Todo log invalid op warning; flag json broken
 	return false
 }

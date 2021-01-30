@@ -35,7 +35,7 @@ class CountCache {
      * Increment count when a new event object at the end of the queue.
      */
     trackCount(flagKey, variationKey) {
-        // this.queue.push(data);
+        
         if (flagKey == "" || variationKey == "") {
             return false
         }
@@ -65,9 +65,6 @@ class CountCache {
         }
 
         this.store.set(EVENTS_COUNT, eventsCount)
-        // logger.info('Store count:',this.store.get(EVENTS_COUNT));
-
-        // this._checkForFlush();
 
         return true;
     }

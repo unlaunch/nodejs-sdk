@@ -1,6 +1,4 @@
 export default function dateOrDateTimeApply(val, userVal, op, discardTime){
-	// This is the value in Java
-	// v = strconv.ParseInt(val.(string), 10, 64)
 	let v = val
 
 	let uv = userVal
