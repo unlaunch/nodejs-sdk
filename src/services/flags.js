@@ -17,13 +17,16 @@ const getFlags = async (host, sdkKey, httpTimeout, logger) => {
         let res = await fetch(`${host}/api/v1/flags`, {
             method: 'GET',
             headers: {
+                'Content-Type': 'application/json',
                 'X-Api-Key': `${sdkKey}`
+                //TODO: 'If-Modified-Since': `$lastUpdatedTime`
             },
             signal: controller.signal
         })
 
         const body = await res.json();
         if (res.status >= 200 && res.status < 300) {
+            //TODO: set lastUpdatedTime     
             return body.data.flags;
         } else if (res.status == 304) {
             logger.info('Polled server but there were no new changes')

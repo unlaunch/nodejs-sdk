@@ -13,10 +13,9 @@ const levels = {
 
 const logger = winston.createLogger({
     level: 'info',
-    // format: winston.format.json(),
     format:combine(
-        timestamp(), // get the time stamp part of the full log message
-        printf(({ level, message, timestamp }) => { // formating the log outcome to show/store 
+        timestamp(), 
+        printf(({ level, message, timestamp }) => { 
           return `${message}`;
     })
     ),

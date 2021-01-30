@@ -32,30 +32,15 @@ class Store {
     if (flags && Object.keys(flags).length > 0) {
       const index = flags ? flags.findIndex((flag) => flag.key == key) : '-1';
       if (index >= 0) {
-        logger.info('Flag found in store');
         return (flags[index])
-      } else {
-        logger.info('Flag not found in store');
-        return {}
       }
-    } else {
-      return {};
     }
+
+    return {};
   }
 
   // get all items stored in context
   getAll() { return objectAssign({}, this._unlaunchMap); }
-
-
-  // getFeature(key){
-
-  //   if(this.get(flags)){
-
-  //   } else {
-  //     logger.info("flag was not found in local storage");
-  //     return {}
-  //   }
-  // }
 
   newFeatureStore(config) {
     return {

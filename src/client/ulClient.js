@@ -106,10 +106,10 @@ export function ulClient(configs, store) {
             }
 
             if (offlineMode) {
-                configs.logger.info('Offline mode selected - Control served')
+                configs.logger.info('Offline mode selected - control served')
                 return new UlFeature(
                     "control",
-                    "Offline mode selected - Control served",
+                    "Offline mode selected - control served",
                     flagKey
                 )
             }
@@ -120,7 +120,7 @@ export function ulClient(configs, store) {
                     "the right result");
                 return new UlFeature(
                     "control",
-                    "Sdk was not ready - Control served",
+                    "Sdk was not ready - control served",
                     flagKey
                 )
             }
@@ -152,11 +152,9 @@ export function ulClient(configs, store) {
                     eventsCache.track(event)
                 }
 
-                // configs.logger.info(`Flag evaluation reason: ${ulFeature.evaluationReason}`);
-
                 return ulFeature;
             } else {
-                configs.logger.error(`Error - Flag- ${flagKey} not found`);
+                configs.logger.error("Error flag with flagKey `${flagKey}` not found");
                 return new UlFeature(
                     "control",
                     "Feature flag was not found in memory",

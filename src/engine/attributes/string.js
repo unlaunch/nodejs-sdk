@@ -5,7 +5,6 @@ export default function stringApply(val, userVal, op) {
     let uv = convertToString(userVal);
     
     if(!uv){
-        // logger.log('Attribute is not a valid string')
         return false;
     }
 
@@ -27,6 +26,5 @@ export default function stringApply(val, userVal, op) {
         return !uv.includes(v)
     }
 
-    // Todo log invalid op warning
     return false
 }
