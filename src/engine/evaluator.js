@@ -118,7 +118,6 @@ function matchTargetingRules(flag, identity, attributes) {
 
 function bucket(key) {
     const hashValue = mmh3.murmur32Sync(key);
-    // logger.info("Bucket num:",Math.abs(hashValue % 100) + 1)
     return (Math.abs(hashValue % 100) + 1)
 }
 

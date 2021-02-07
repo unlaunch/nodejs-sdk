@@ -5,32 +5,29 @@ import { merge } from "../../../src/utils/lang/index.js";
 const base = {
   core:{
     sdkKey:'',
-    host:'https://api-qa.unlaunch.io'
+    host:'https://api.unlaunch.io'
   },
   intervals: {
-    // fetch feature updates each 30 sec
+    // fetch feature updates each 15 sec
     pollingInterval: 15,
-    // publish metrics each 120 sec
-    metricsFlushInterval: 120,
-    // flush events every 60 seconds after the first flush
-    eventsFlushInterval: 40,
+    // publish metrics each 15 sec
+    metricsFlushInterval: 15,
+    // flush events every 15 seconds 
+    eventsFlushInterval: 15,
     // http connection timeout 
-    httpConnectionTimeout: 20,
+    httpConnectionTimeout: 1,
   },
   size:{
-    eventsQueueSize: 10,
-    metricsQueueSize: 10
+    eventsQueueSize: 100,
+    metricsQueueSize: 100
   },
   mode: {
     offlineMode: false
   },
 
   urls: {
-    // CDN having all the information for your environment
     sdk: '/api/v1/flags',
-    // Storage for your SDK events
     events: '/api/v1/events',
-    // Storage for your SDK impressions
     impressions:'/api/v1/impressions'
   },
   sendImpression:false,
@@ -38,7 +35,7 @@ const base = {
 };
 
 function fromSecondsToMillis(n) {
-  return Math.round(n * 1000);
+  return n * 1000;
 }
 
 function defaults(custom) {
@@ -69,14 +66,6 @@ function defaults(custom) {
   withDefaults.intervals.metricsFlushInterval = fromSecondsToMillis(withDefaults.intervals.metricsFlushInterval);
   withDefaults.intervals.httpConnectionTimeout = fromSecondsToMillis(withDefaults.intervals.httpConnectionTimeout);
   withDefaults.intervals.eventsFlushInterval = fromSecondsToMillis(withDefaults.intervals.eventsFlushInterval);
-
-  // // mode
-  //  withDefaults.mode.offlineMode = false;
-
-  // Startup periods
-  //  withDefaults.startup.requestTimeoutBeforeReady = fromSecondsToMillis(withDefaults.startup.requestTimeoutBeforeReady);
-  //  withDefaults.startup.readyTimeout = fromSecondsToMillis(withDefaults.startup.readyTimeout);
-  //  withDefaults.startup.eventsFirstPushWindow = fromSecondsToMillis(withDefaults.startup.eventsFirstPushWindow);
 
   return withDefaults;
 }

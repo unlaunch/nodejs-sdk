@@ -4,7 +4,6 @@ export default function numberApply(val, userVal, op) {
     let uv= parseInt(userVal)
 
     if(!v || !uv) {
-        // TODO log warning that name matches but type is not bool
         return false
     }
 
@@ -22,7 +21,6 @@ export default function numberApply(val, userVal, op) {
         case "NEQ":
             return uv != v
         default:
-            // Todo log invalid op warning
             return false
 
     }

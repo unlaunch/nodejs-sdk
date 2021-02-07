@@ -14,11 +14,10 @@ export default Set.prototype.equals= function(target) {
     return isEqual;
 };
 
-
 Set.prototype.isSubSet = function(target) {
     // if size of this set is greater 
-    // than target then it can'nt be  
-    //  a subset 
+    // than target then it can't be  
+    // a subset 
   
     if (this.size > target.size)
         return false;
@@ -36,7 +35,7 @@ Set.prototype.isSubSet = function(target) {
 
 Set.prototype.isSuperSet = function(target){
     // if size of this set is less 
-    // than target then it can'nt be  
+    // than target then it can't be  
     //  a superset 
     if (this.size < target.size)
         return false;
