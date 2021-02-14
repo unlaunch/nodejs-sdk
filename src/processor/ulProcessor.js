@@ -1,10 +1,6 @@
 import getFlags from "../../src/services/flags.js";
 
 export function UlProcessor(config, store) {
-    
-    const startTime = new Date().getTime();
-
-    function poll()
 
     return {
         start(cb) {
@@ -16,9 +12,7 @@ export function UlProcessor(config, store) {
 
                 }).catch((err) => {
                     cb(err, null)
-                    
                 })
         },
     }
-
 }

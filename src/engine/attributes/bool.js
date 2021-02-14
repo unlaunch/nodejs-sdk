@@ -1,6 +1,11 @@
 
 
-export default function boolApply(val, userVal , op ){
+export default function boolApply(val, userVal, op){
+
+	if(userVal === undefined || userVal === null || userVal.constructor.name != "Boolean") {
+		throw new Error("Invalid boolean attribute value");
+	}
+
 	const v =  Boolean(val)
 	const uv = Boolean(userVal)
 

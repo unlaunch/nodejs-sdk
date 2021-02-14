@@ -35,8 +35,8 @@ describe('String Operators test', () => {
     it('string NEW op should match', function () {
         assert.equal(stringApply(flagString, "doesntendswithahiman", 'NEW'), false)
     })
-    it("null string shouldn't match", function () {
-        assert.equal(stringApply(flagString, null, 'SW'), false)
+    it("null string should throw Error", function () {
+        assert.throws(() => stringApply(flagString, null, 'SW'), Error)
     })
     it("empty string shouldn't match", function () {
         assert.equal(stringApply(flagString, "", 'EW'), false)

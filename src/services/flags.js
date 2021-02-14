@@ -1,7 +1,5 @@
 import fetch from 'node-fetch';
 import AbortController from 'abort-controller';
-import logger from "../utils/logger/logger.js";
-
 
 const getFlags = async (host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
     logger.info(`'GET': ${host}/api/v1/flags`);
@@ -23,16 +21,15 @@ const getFlags = async (host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
             },
             signal: controller.signal
         })
+
         if (res.status >= 200 && res.status < 300) {
             const body = await res.json();
-
             return {
                 "flags": body.data.flags,
                 "lastUpdatedTime": res.headers.get('Last-modified')
             };
-
         } else if (res.status == 304) {
-            logger.info('Polled server but there were no new changes')
+            logger.info('Polled data from server but there were no new changes')
         } else if (res.status == 403) {
             logger.info(
                 "The SDK key you provided was rejected by the server and no data was " +

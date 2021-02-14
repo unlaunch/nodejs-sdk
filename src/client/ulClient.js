@@ -1,22 +1,14 @@
-import Store from '../utils/store/index.js';
 import EventEmitter from 'events';
-//processors
 import PollingProcessor from "../processor/pollingProcessor.js";
 import OfflineProcessor from "../processor/offlineProcessor.js";
 import EventProcessor from "../events/eventProcessor.js";
 import OfflineEventProcessor from "../events/offlineEventProcessor.js";
-//cache
 import EventsCache from "../storage/eventsCache/InMemory.js";
 import CountCache from "../storage/countCache/InMemory.js";
-//engine
 import { evaluate } from '../engine/evaluator.js';
-//utils
 import { isObject } from "../../src/utils/lang/index.js";
-//dtos
 import UlFeature from "../dtos/UlFeature.js";
-import Event from "../dtos/Events.js";
 import Impression from "../dtos/Impression.js";
-//constants
 import { READY } from '../utils/store/constants.js';
 
 /**
@@ -39,14 +31,13 @@ export function ulClient(configs, store) {
                 if (err) {
                     return new UlFeature(
                         "control",
-                        "Sdk was not ready - Control served",
+                        "Sdk was not ready - control served",
                         ""
                     )
                 }
             })
 
         eventProcessor.start();
-
 
         /**
          * Variation method to get variation after performing evaluation 
@@ -56,7 +47,7 @@ export function ulClient(configs, store) {
          */
 
         client.variation = (flagKey, identity, attributes = {}) => {
-            return evaluateFlag(flagKey, identity, attributes).variation;
+            return evaluateFlag(flagKey, identity, attributes).variationKey;
         }
 
 
@@ -82,7 +73,7 @@ export function ulClient(configs, store) {
                 configs.logger.error('Please provide valid flagKey');
                 return new UlFeature(
                     "control",
-                    "Feature key was empty string. You must provide the key of the feature flag to evaluate",
+                    "Feature flag key was empty",
                     flagKey
                 )
             }
@@ -91,16 +82,16 @@ export function ulClient(configs, store) {
                 configs.logger.error('Please provide valid identity')
                 return new UlFeature(
                     "control",
-                    "Identity was empty string. You must provide a unique value per user",
+                    "Identity was empty",
                     flagKey
                 )
             }
 
             if (attributes && Object.keys(attributes).length > 0 && !isObject(attributes)) {
-                configs.logger.error('Please provide valid attributes')
+                configs.logger.error('Please provide valid Unlaunch attributes')
                 return new UlFeature(
                     "control",
-                    "You must provide valid attribute",
+                    "Invalid Unlaunch attribute(s)",
                     flagKey
                 )
             }
@@ -129,32 +120,31 @@ export function ulClient(configs, store) {
 
             if (Object.keys(flag).length > 0 && flag.constructor === Object) {
                 const ulFeature = evaluate(flag, identity, attributes, configs.logger);
-                if (ulFeature.variation != '' && ulFeature.variation != 'control') {
+                if (ulFeature.variationKey != '' && ulFeature.variationKey != 'control') {
                     // record count
-                    countCache.trackCount(flagKey, ulFeature.variation)
+                    countCache.trackCount(flagKey, ulFeature.variationKey)
                     // record event
                     let event = new Impression(
-                        Math.floor(new Date().getTime() / 1000) * 1000,
+                        new Date().getTime(),
                         "IMPRESSION",
                         null,
                         "Node",
-                        "0.0.1",
+                        "0.0.5",
                         null,
                         flagKey,
                         identity,
-                        ulFeature.variation,
+                        ulFeature.variationKey,
                         'ACTIVE',
                         ulFeature.evaluationReason,
                         "UNKNOWN",
                         "UNKNOWN"
-
                     )
                     eventsCache.track(event)
                 }
 
                 return ulFeature;
             } else {
-                configs.logger.error("Error flag with flagKey `${flagKey}` not found");
+                configs.logger.error(`Error flag with flagKey ${flagKey} not found`);
                 return new UlFeature(
                     "control",
                     "Feature flag was not found in memory",
@@ -175,6 +165,7 @@ export function ulClient(configs, store) {
         return client;
 
     }
+
     return {
         client: newUnlaunchClient
     }

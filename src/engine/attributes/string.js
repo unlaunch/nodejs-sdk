@@ -1,8 +1,11 @@
-import { convertToString, startsWith, endsWith } from "../../../src/utils/lang/index.js";
-
 export default function stringApply(val, userVal, op) {
+
+    if (userVal === undefined || userVal === null || userVal.constructor.name != "String") {
+        throw new Error("Invalid string attribute.")
+    }
+
     let v = val
-    let uv = convertToString(userVal);
+    let uv = userVal;
     
     if(!uv){
         return false;
@@ -13,13 +16,13 @@ export default function stringApply(val, userVal, op) {
     } else if (op == "NEQ") {
         return uv != v
     } else if (op == "SW") {
-        return startsWith(uv, v)
+        return uv.startsWith(v);
     } else if (op == "NSW") {
-        return !startsWith(uv, v)
+        return !uv.startsWith(v);
     } else if (op == "EW") {
-        return endsWith(uv, v, true)
+        return uv.endsWith(v);
     } else if (op == "NEW") {
-        return !endsWith(uv, v, true)
+        return !uv.endsWith(v);
     } else if (op == "CON") {
         return uv.includes(v)
     } else if (op == "NCON") {

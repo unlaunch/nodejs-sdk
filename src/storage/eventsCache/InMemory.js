@@ -20,7 +20,7 @@ class EventsCache {
             this.queue = [];
             this.queueSize = 0;
         }
-        this._checkForFlush(); // Events is ready, check the queue.
+        this._checkForFlush();
     }
 
     /**
@@ -34,20 +34,17 @@ class EventsCache {
      * Add a new event object at the end of the queue.
      */
     track(event) {
-        // this.queue.push(data);
         if (!event) {
             return false
         }
 
         let events = this.store.get(EVENTS);
-
         if (events) {
             events.push(event)
         } else {
             events = [];
             events.push(event)
         }
-
         this.store.set(EVENTS, events)
 
         return true;

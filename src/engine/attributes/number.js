@@ -1,7 +1,11 @@
 export default function numberApply(val, userVal, op) {
 
-    let v = parseInt(val)
-    let uv= parseInt(userVal)
+    if (userVal === undefined || userVal === null || userVal.constructor.name != "Number") {
+        throw new Error("Invalid number attribute.")
+    }
+
+    let v = parseFloat(val)
+    let uv = parseFloat(userVal)
 
     if(!v || !uv) {
         return false
@@ -22,6 +26,5 @@ export default function numberApply(val, userVal, op) {
             return uv != v
         default:
             return false
-
     }
-ss}
+}

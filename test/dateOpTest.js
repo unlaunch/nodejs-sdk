@@ -1,39 +1,49 @@
 import chai from 'chai';
 import dateOrDateTimeApply from '../src/engine/attributes/datetime.js'
 const assert = chai.assert;
-// Flag always contain datetime in Java milliseconds since epoch
-const flagDateTime = "1232071462000" // Aug 16, 2009
-const dateAug152009 = "1250298753000" // August 15, 2009 1:25:33 AM
-const dateAug162009 = "1250423999000" // Aug 16, 2009
-const dateAug172009 = "1250472333000" // August 17, 2009 1:25:33 AM
+
+const ONE_DAY = 24 * 60 * 60 * 1000;
 
 describe('Date Operators test', () => {
-    it('date op: equal dates should match', function () {
-        assert.equal(dateOrDateTimeApply(dateAug162009, dateAug162009,"EQ", true), true)
+
+    let currentDate = new Date();
+
+    it('date op: equal userValue = value should match', function () {
+        assert.equal(dateOrDateTimeApply(currentDate.getTime(), currentDate,"EQ", true), true)
     })
-    it('date op: equal dates should match', function () {
-        assert.equal(dateOrDateTimeApply(dateAug162009, dateAug162009,"EQ", true), true)
-    })
-    it('date op: greater than date should match', function () {
-        assert.equal(dateOrDateTimeApply(dateAug162009, dateAug172009,"GT",true), true)
-    })
-    it('date op: greater than date should not match', function () {
-        assert.equal(dateOrDateTimeApply(dateAug162009, dateAug152009,"GT", true), false)
-    })
-    it('date op: less than dates should match', function () {
-        assert.equal(dateOrDateTimeApply(dateAug162009, dateAug152009,"LT", true), true)
-    })
-    it('date op: less than dates should not match', function () {
-        assert.equal(dateOrDateTimeApply(dateAug162009, dateAug172009,"LT", true), false)
-    })
-    it('date op: greater than equal dates should match', function () {
-        assert.equal(dateOrDateTimeApply(dateAug162009, Math.floor(new Date().getTime() / 1000) * 1000,"GTE", true), true)
-    })
-    it('date op: less than equal dates should match', function () {
-        assert.equal(dateOrDateTimeApply(dateAug162009, dateAug162009,"LTE", true), true)
-    })
-    it('date op: less than equal dates should match', function () {
-        assert.equal(dateOrDateTimeApply(dateAug162009, dateAug152009,"LTE", true), true)
+    it('date op: equal userValue = value should match', function () {
+        assert.equal(dateOrDateTimeApply(currentDate.getTime(), currentDate.getTime(),"EQ", true), true)
     })
 
+    let valueDate = new Date();
+    valueDate.setDate(15);
+    valueDate.setHours(2);
+    let userDate = new Date();
+    userDate.setDate(15);
+    userDate.setHours(15);
+    it('date op: equal userDate = valueDate should match', function () {
+        assert.equal(dateOrDateTimeApply(valueDate.getTime(), userDate,"EQ", true), true)
+    })
+
+    it('date op: greater than userDate > valueDate should match', function () {
+        assert.equal(dateOrDateTimeApply(currentDate.getTime(), currentDate.getTime() + ONE_DAY,"GT",true), true)
+    })
+    it('date op: greater than date should not match', function () {
+        assert.equal(dateOrDateTimeApply(currentDate.getTime(), currentDate,"GT", true), false)
+    })
+    it('date op: less than userDate < valueDate should match', function () {
+        assert.equal(dateOrDateTimeApply(currentDate.getTime(), currentDate - ONE_DAY,"LT", true), true)
+    })
+    it('date op: less than userDate = valueDate should not match', function () {
+        assert.equal(dateOrDateTimeApply(currentDate.getTime(), currentDate,"LT", true), false)
+    })
+    it('date op: greater than equal userDate = valueDate should match', function () {
+        assert.equal(dateOrDateTimeApply(currentDate.getTime(), currentDate,"GTE", true), true)
+    })
+    it('date op: less than equal userDate < valueDate should match', function () {
+        assert.equal(dateOrDateTimeApply(currentDate.getTime(), currentDate - ONE_DAY,"LTE", true), true)
+    })
+    it('date op: less than equal userDate = valueDate should match', function () {
+        assert.equal(dateOrDateTimeApply(currentDate.getTime(), currentDate.getTime(),"LTE", true), true)
+    })
 })

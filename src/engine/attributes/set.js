@@ -1,21 +1,24 @@
 import "../../../src/engine/helper/setMatcher.js";
-import { convertToString } from "../../../src/utils/lang/index.js";
 
 export default function setApply(val, userVal, op){
 
-	let vals = convertToString(val)
-	const ruleSet = new Set();
-	vals.split(",").map((item)=>{
-		ruleSet.add(item.trim())
-	}) 
+	if (userVal === undefined || userVal === null) {
+		throw new Error("Invalid set attribute value. Set attribute must be type of set or array.")
+	}
 
-	let uValues = convertToString(userVal)
-	let userValuesSet = new Set()
-	uValues.split(",").map((item)=>{	
-		userValuesSet.add(item.trim())
+	let userValuesSet;
+	if (Array.isArray(userVal)) {
+		userValuesSet = new Set(userVal);
+	} else if (userVal.constructor.name == "Set") {
+		userValuesSet = userVal;
+	} else {
+		throw new Error("Invalid set attribute value. Set attribute must be type of set or array.")
+	}
+
+	let ruleSet = new Set()
+	val.split(",").map((item)=>{
+		ruleSet.add(item.trim())
 	})
-	
-	let i;
     
 	switch(op){
 	case "AO": // All Of
@@ -23,11 +26,9 @@ export default function setApply(val, userVal, op){
 	case "NAO":
 		return !userValuesSet.isSuperSet(ruleSet)
 	case "HA": // Has Any Of
-		i = userValuesSet.intersect(ruleSet)
-		return i.cardinality() > 0
+		return userValuesSet.intersect(ruleSet).cardinality() > 0
 	case "NHA": // Not Has Any Of
-		i = userValuesSet.intersect(ruleSet)
-		return i.cardinality() == 0
+		return userValuesSet.intersect(ruleSet).cardinality() == 0
 	case "EQ": // Equals
 		return userValuesSet.equals(ruleSet)
 	case "NEQ": // Not Equals
