@@ -2,8 +2,8 @@ import { CONFIGURATIONS, EVENTS,EVENTS_COUNT } from '../../utils/store/constants
 import EventProcessor from "../../events/eventProcessor.js";
 import AsyncLock from 'async-lock';
 
+// TODO: Add synchronization
 const lock = new AsyncLock();
-
 
 class CountCache {
 
@@ -11,17 +11,9 @@ class CountCache {
         this.store = store;
         const settings = store.get(CONFIGURATIONS);
         const eventsCount = store.get(EVENTS_COUNT);
-
-        this.onFullQueue = false;
         this.maxQueue = settings.size.metricsQueueSize;
-        if (eventsCount && eventsCount.length > 0) {
-            this.queue = eventsCount;
-            this.queueSize = eventsCount.length;
-        } else {
-            this.queue = [];
-            this.queueSize = 0;
-        }
-        this._checkForFlush(); // Events is ready, check the queue.
+        this.queue = [];
+        this.queueSize = 0;
     }
 
     /**
@@ -39,11 +31,11 @@ class CountCache {
         if (flagKey == "" || variationKey == "") {
             return false
         }
+
         let count = 0;
         let eventsCount = this.store.get(EVENTS_COUNT);
 
         if (eventsCount) {
-
             const index = eventsCount.findIndex(e => e.key == `${flagKey},${variationKey}`);
 
             const eventsCountObj = {
@@ -53,7 +45,7 @@ class CountCache {
             if (index >= 0) {
                 eventsCount[index] = eventsCountObj
             } else {
-                events.push(eventsCountObj)
+                eventsCount.push(eventsCountObj)
             }
         } else {
             eventsCount = [];
