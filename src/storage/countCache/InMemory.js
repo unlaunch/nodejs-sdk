@@ -10,10 +10,16 @@ class CountCache {
     constructor(store) {
         this.store = store;
         const settings = store.get(CONFIGURATIONS);
-        const eventsCount = store.get(EVENTS_COUNT);
         this.maxQueue = settings.size.metricsQueueSize;
-        this.queue = [];
-        this.queueSize = 0;
+
+        const eventsCount = store.get(EVENTS_COUNT);
+        if (eventsCount && eventsCount.length > 0) {
+            this.queue = eventsCount;
+            this.queueSize = eventsCount.length;
+        } else {
+            this.queue = [];
+            this.queueSize = 0;
+        }
     }
 
     /**

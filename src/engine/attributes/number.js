@@ -1,6 +1,6 @@
 export default function numberApply(val, userVal, op) {
 
-    if (userVal === undefined || userVal === null || userVal.constructor.name != "Number") {
+    if (userVal == null || userVal.constructor.name != "Number") {
         throw new Error("Invalid number attribute.")
     }
 

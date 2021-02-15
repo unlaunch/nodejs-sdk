@@ -2,8 +2,8 @@ import "../../../src/engine/helper/setMatcher.js";
 
 export default function setApply(val, userVal, op){
 
-	if (userVal === undefined || userVal === null) {
-		throw new Error("Invalid set attribute value. Set attribute must be type of set or array.")
+	if (userVal == null) {
+		throw new Error("Invalid set attribute value.")
 	}
 
 	let userValuesSet;
@@ -12,7 +12,7 @@ export default function setApply(val, userVal, op){
 	} else if (userVal.constructor.name == "Set") {
 		userValuesSet = userVal;
 	} else {
-		throw new Error("Invalid set attribute value. Set attribute must be type of set or array.")
+		throw new Error("Set attribute must be type of Set or Array.")
 	}
 
 	let ruleSet = new Set()

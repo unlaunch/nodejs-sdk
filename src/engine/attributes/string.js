@@ -1,7 +1,7 @@
 export default function stringApply(val, userVal, op) {
 
-    if (userVal === undefined || userVal === null || userVal.constructor.name != "String") {
-        throw new Error("Invalid string attribute.")
+    if (userVal == null || userVal.constructor.name != "String") {
+        throw new Error("Invalid string attribute value.")
     }
 
     let v = val

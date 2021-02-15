@@ -2,8 +2,8 @@ export default function dateOrDateTimeApply(val, userVal, op, discardTime){
 	let v = val
 	let uv = userVal
 
-	if (uv === undefined || uv === null) {
-		throw new Error("Invalid date or datetime. Date or datetime must be type of date or time value in milliseconds")
+	if (uv == null) {
+		throw new Error("Invalid date or datetime value")
 	}
 
 	if (uv.constructor.name == "Date") {
@@ -18,7 +18,7 @@ export default function dateOrDateTimeApply(val, userVal, op, discardTime){
 			uv = tsWithZeroTime(userVal)
 		}
 	} else {
-		throw new Error("Invalid date or datetime. Date or datetime must be type of date or time value in milliseconds")
+		throw new Error("Date or datetime must be type of Date or time value in milliseconds")
 	}
 
 	switch(op) {

@@ -10,10 +10,16 @@ class EventsCache {
     constructor(store) {
         this.store = store;
         const settings = store.get(CONFIGURATIONS);
-        const events = store.get(EVENTS);
         this.maxQueue = settings.size.eventsQueueSize;
-        this.queue = [];
-        this.queueSize = 0;
+
+        const events = store.get(EVENTS);
+        if (events && events.length > 0) {
+            this.queue = events;
+            this.queueSize = events.length;
+        } else {
+            this.queue = [];
+            this.queueSize = 0;
+        }
     }
 
     /**
