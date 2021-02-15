@@ -1,4 +1,3 @@
-//constants
 export const CONSTANTS = {
   SDK_READY: `Getting ready - Unlaunch SDK`,
   SDK_VARIATION: `SDK - Get Variation`,

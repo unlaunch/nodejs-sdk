@@ -1,6 +1,4 @@
 import objectAssign from 'object-assign'
-import logger from "../logger/logger.js";
-
 
 class Store {
   constructor() {

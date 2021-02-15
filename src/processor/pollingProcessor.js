@@ -15,15 +15,15 @@ export default function PollingProcessor(configs, store) {
             configs.core.host,
             configs.core.sdkKey,
             configs.intervals.httpConnectionTimeout,
-            store.get('lastUpdatedTime') != null ? store.get('lastUpdatedTime'): null ,
+            store.get('lastUpdatedTime') != null ? store.get('lastUpdatedTime') : null ,
             configs.logger
         ).then((res) => {
-            const flags = res.flags;
-            store.setFeatures(flags);
-            store.set('lastUpdatedTime',res.lastUpdatedTime);
+            if (res) {
+                store.setFeatures(res.flags);
+                store.set('lastUpdatedTime', res.lastUpdatedTime);
+            }
             pollAfterSleep(startTime, cb)
             cb(null, { initialized: true })
-
         }).catch((err) => {
             configs.logger.error(`Error - ${err.message}`);
             pollAfterSleep(startTime, cb)
@@ -34,7 +34,6 @@ export default function PollingProcessor(configs, store) {
     function pollAfterSleep(startTime, cb) {
         const elapsed = new Date().getTime() - startTime;
         const sleepFor = Math.max(configs.intervals.pollingInterval - elapsed, 0);
-        configs.logger.info(`Elapsed: ${elapsed} ms, sleeping for ${sleepFor} ms`);
         pollTimeoutId = setTimeout(() => {
             poll(cb);
         }, sleepFor);

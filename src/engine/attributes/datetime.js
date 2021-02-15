@@ -1,16 +1,24 @@
 export default function dateOrDateTimeApply(val, userVal, op, discardTime){
 	let v = val
-
 	let uv = userVal
 
-	if(discardTime){
-		v = tsWithZeroTime(val)
-		uv = tsWithZeroTime(userVal)
+	if (uv == null) {
+		throw new Error("Invalid date or datetime value")
 	}
-	
-	if(uv == null) {
-		// TODO log warning that name matches but type is not right
-		return false
+
+	if (uv.constructor.name == "Date") {
+		if (discardTime) {
+			uv.setHours(0, 0, 0, 0);
+			v = tsWithZeroTime(val);
+		}
+		uv = uv.getTime();
+	} else if (uv.constructor.name == "Number") {
+		if(discardTime){
+			v = tsWithZeroTime(val)
+			uv = tsWithZeroTime(userVal)
+		}
+	} else {
+		throw new Error("Date or datetime must be type of Date or time value in milliseconds")
 	}
 
 	switch(op) {
@@ -31,12 +39,8 @@ export default function dateOrDateTimeApply(val, userVal, op, discardTime){
 	}
 }
 
-function javaTimeToEpoch(ts){
-	return ts / 1000
-}
-
 function tsWithZeroTime(ts){
-	var d = new Date(Number(ts));
+	const d = new Date(Number(ts));
 	d.setHours(0,0,0,0);
     return d.getTime();
 }

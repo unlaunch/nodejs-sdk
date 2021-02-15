@@ -2,6 +2,7 @@ import { CONFIGURATIONS, EVENTS, EVENTS_COUNT } from '../../utils/store/constant
 import EventsProcessor from '../../events/eventProcessor.js';
 import AsyncLock from 'async-lock';
 
+// TODO: Add synchronization
 const lock = new AsyncLock();
 
 class EventsCache {
@@ -9,10 +10,9 @@ class EventsCache {
     constructor(store) {
         this.store = store;
         const settings = store.get(CONFIGURATIONS);
-        const events = store.get(EVENTS);
-
-        this.onFullQueue = false;
         this.maxQueue = settings.size.eventsQueueSize;
+
+        const events = store.get(EVENTS);
         if (events && events.length > 0) {
             this.queue = events;
             this.queueSize = events.length;
@@ -20,7 +20,6 @@ class EventsCache {
             this.queue = [];
             this.queueSize = 0;
         }
-        this._checkForFlush(); // Events is ready, check the queue.
     }
 
     /**
@@ -34,20 +33,17 @@ class EventsCache {
      * Add a new event object at the end of the queue.
      */
     track(event) {
-        // this.queue.push(data);
         if (!event) {
             return false
         }
 
         let events = this.store.get(EVENTS);
-
         if (events) {
             events.push(event)
         } else {
             events = [];
             events.push(event)
         }
-
         this.store.set(EVENTS, events)
 
         return true;
