@@ -50,6 +50,15 @@ export function ulClient(configs, store) {
             return evaluateFlag(flagKey, identity, attributes).variationKey;
         }
 
+        /**
+         * Get configuration (key-value properties) attached to variation
+         * @param {string} flagKey
+         * @param {string} identity
+         * @param {object} attributes
+         */
+        client.variationConfiguration = (flagKey, identity, attributes = {}) => {
+            return evaluateFlag(flagKey, identity, attributes).configs;
+        }
 
         /**
          * Feature method to get feature object containing evaluation reason and variation
