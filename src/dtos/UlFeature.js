@@ -1,9 +1,14 @@
 class UnlaunchFeature{
-    constructor(variation='',evaluationReason='',feature=''){
-        this.variation = variation;
+    constructor(variationKey= '', evaluationReason= '', flagKey= '', configs = {}){
+        this.variationKey = variationKey;
         this.evaluationReason = evaluationReason;
-        this.feature = feature;
-    } 
+        this.flagKey = flagKey;
+        this.configs = configs;
+    }
+
+    variationConfiguration() {
+        return this.configs;
+    }
 }
 
 export default UnlaunchFeature

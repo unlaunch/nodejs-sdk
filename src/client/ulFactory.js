@@ -1,5 +1,5 @@
 /**
- * Factory method for UnLaunch Client
+ * Factory method for Unlaunch Client
  */
 
 import { ConfigsFactory } from '../utils/settings/index.js'
@@ -15,10 +15,10 @@ export function UnlaunchFactory(configurations) {
     store.set(READY, false);
 
     if (!configs.core.sdkKey) {
-        throw ('Factory intantiation requires a valid sdk key');
+        throw ('Factory instantiation requires a valid sdk key');
     } else {
         if (!validateApiKey(configs.core.sdkKey, configs.logger)) {
-            throw ('Client intantiation requires a valid sdk key');
+            throw ('Client instantiation requires a valid sdk key');
         }
     }
     return {

@@ -1,12 +1,10 @@
 import { CONFIGURATIONS, EVENTS, EVENTS_COUNT } from '../utils/store/constants.js';
 import Events from '../dtos/Events.js'
 import Impression from '../dtos/Impression.js'
-//services
 import postMetrics from "../services/events.js";
 import postImpressions from "../services/impressions.js";
 
 export default function EventsProcessor(config, storage) {
-  let queue = [];
   let settings = storage.get(CONFIGURATIONS)
   let eventsPublishId = false;
   let countPublishId = false;
@@ -50,7 +48,7 @@ export default function EventsProcessor(config, storage) {
         data,
         config.logger
       ).then(res => {
-        storage.set(EVENTS_COUNT, []) // we always clear the queue.
+        storage.set(EVENTS_COUNT, []) // clear the queue.
       }).catch(err => {
       })
     }
@@ -62,8 +60,6 @@ export default function EventsProcessor(config, storage) {
   const flushCountAfterSleep = (startTime) => {
     const elapsed = new Date().getTime() - startTime;
     const sleepFor = Math.max(config.intervals.metricsFlushInterval - elapsed, 0);
-    config.logger.info(`Count Metrics: Elapsed: ${elapsed} ms, sleeping for ${sleepFor} ms`);
-
     countPublishId = setTimeout(() => {
       pushCounts();
     }, sleepFor);
@@ -78,7 +74,7 @@ export default function EventsProcessor(config, storage) {
         flushEventsAfterSleep(startTime)
         return Promise.resolve;
       }
-  
+
       config.logger.info(`Pushing ${events.length} queued impression events.`);
   
       if (events.length > 0) {
@@ -89,7 +85,7 @@ export default function EventsProcessor(config, storage) {
           events,
           config.logger
         ).then(res => {
-          storage.set(EVENTS, []) // we always clear the queue.
+          storage.set(EVENTS, []) // clear the queue.
         }).catch(err => {
         })
       }
@@ -101,8 +97,6 @@ export default function EventsProcessor(config, storage) {
   const flushEventsAfterSleep = (startTime) => {
     const elapsed = new Date().getTime() - startTime;
     const sleepFor = Math.max(config.intervals.eventsFlushInterval - elapsed, 0);
-    config.logger.info(`Impression Metrics: Elapsed: ${elapsed} ms, sleeping for ${sleepFor} ms`);
-
     eventsPublishId = setTimeout(() => {
       pushEvents();
     }, sleepFor);
@@ -136,8 +130,6 @@ export default function EventsProcessor(config, storage) {
 
     flushAndResetTimer() {
       // Reset the timer and push the events.
-      config.logger.info('Flushing events and reseting timer.');
-
       countPublishId && clearTimeout(countPublishId);
       pushCounts();
 

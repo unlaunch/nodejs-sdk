@@ -4,7 +4,7 @@ import boolApply from "../../src/engine/attributes/bool.js";
 import dateOrDateTimeApply from "../../src/engine/attributes/datetime.js";
 import setApply from "../../src/engine/attributes/set.js";
 
-export function apply(attrType ,val ,userVal ,op) {
+export function apply(attrType, val, userVal, op) {
 
 	switch(attrType) {
 	case "boolean":
