@@ -1,9 +1,4 @@
 import { CONFIGURATIONS, EVENTS,EVENTS_COUNT } from '../../utils/store/constants.js';
-import EventProcessor from "../../events/eventProcessor.js";
-import AsyncLock from 'async-lock';
-
-// TODO: Add synchronization
-const lock = new AsyncLock();
 
 class CountCache {
 
@@ -65,41 +60,6 @@ class CountCache {
         this.store.set(EVENTS_COUNT, eventsCount)
 
         return true;
-    }
-
-    /**
-     * Clear the data stored on the cache.
-     */
-    clear() {
-        this.queue = [];
-        this.queueSize = 0;
-
-        return this;
-    }
-
-    /**
-     * Returns the payload we will use for posting data.
-     */
-    toJSON() {
-        return this.queue;
-    }
-
-    /**
-     * Check if the cache is empty.
-     */
-    isEmpty() {
-        return this.queue.length === 0;
-    }
-
-    /**
-     * Check if the cache queue is full and we need to flush it.
-     */
-    _checkForFlush() {
-        if (
-            (this.maxQueue > 0 && this.queueSize >= this.maxQueue)
-        ) {
-            eventProcessor.flushAndResetTimer();
-        }
     }
 }
 

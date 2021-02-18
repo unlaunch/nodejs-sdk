@@ -4,7 +4,11 @@ class UnlaunchFeature{
         this.evaluationReason = evaluationReason;
         this.flagKey = flagKey;
         this.configs = configs;
-    } 
+    }
+
+    variationConfiguration() {
+        return this.configs;
+    }
 }
 
 export default UnlaunchFeature
