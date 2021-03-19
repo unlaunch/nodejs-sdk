@@ -1,7 +1,67 @@
 import fetch from 'node-fetch';
 import AbortController from 'abort-controller';
 
-const getFlags = async (host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
+const getFlags = async (sync0Complete, s3BucketHost, host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
+   
+    if(!sync0Complete){
+        return sync0FromS3(s3BucketHost, host, sdkKey, httpTimeout, lastUpdatedTime, logger)
+    } else{
+        return regularServerSync(host, sdkKey, httpTimeout, lastUpdatedTime, logger);        
+    }
+}
+
+
+const sync0FromS3 = async(s3BucketHost, host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
+    logger.info(`'GET': ${s3BucketHost}/${sdkKey}`);
+
+    const controller = new AbortController();
+
+    const timeout = setTimeout(() => {
+        controller.abort();
+    }, httpTimeout);
+
+    try {
+
+        let res = await fetch(`${s3BucketHost}/${sdkKey}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            signal: controller.signal
+        })
+
+        if (res.status == 200) {
+            const body = await res.json();
+            if(body.data.flags.length){
+                return {
+                    "flags": body.data.flags,
+                    "lastUpdatedTime": null,
+                };
+            }else{
+                return regularServerSync( host, sdkKey, httpTimeout, lastUpdatedTime, logger);          
+            }
+          
+        } else {
+            // If the s3 object doesn't exist, attempt a regular sync
+            return regularServerSync( host, sdkKey, httpTimeout, lastUpdatedTime, logger);          
+        }
+    } catch (error) {
+        // Should we even show these errors?
+        if (error.type && error.type == "aborted") {
+            logger.error('Http connection timed out. Request aborted.');
+        } else {
+            logger.error("Error occurred during initial s3 sync: " + error);
+        }
+
+        // Fallback to regular sync in case of any error
+        return regularServerSync( host, sdkKey, httpTimeout, lastUpdatedTime, logger);          
+
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
+const regularServerSync = async(host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
     logger.info(`'GET': ${host}/api/v1/flags`);
   
     const controller = new AbortController();
@@ -26,7 +86,7 @@ const getFlags = async (host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
             const body = await res.json();
             return {
                 "flags": body.data.flags,
-                "lastUpdatedTime": res.headers.get('Last-modified')
+                "lastUpdatedTime": res.headers.get('Last-modified'),
             };
         } else if (res.status == 304) {
             logger.info('Polled data from server but there were no new changes')
@@ -51,5 +111,4 @@ const getFlags = async (host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
         clearTimeout(timeout);
     }
 }
-
 export default getFlags;
