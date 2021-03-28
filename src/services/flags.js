@@ -32,9 +32,9 @@ const sync0FromS3 = async(s3BucketHost, host, sdkKey, httpTimeout, lastUpdatedTi
 
         if (res.status == 200) {
             const body = await res.json();
-            if(body.data.flags.length){
+            if(body.flags.length){
                 return {
-                    "flags": body.data.flags,
+                    "flags": body.flags,
                     "lastUpdatedTime": null,
                 };
             }else{
