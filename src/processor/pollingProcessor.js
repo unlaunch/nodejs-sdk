@@ -12,6 +12,8 @@ export default function PollingProcessor(configs, store) {
 
         const startTime = new Date().getTime();
         getFlags(
+            store.get('sync0Complete'),
+            configs.core.s3BucketHost,
             configs.core.host,
             configs.core.sdkKey,
             configs.intervals.httpConnectionTimeout,
@@ -29,6 +31,12 @@ export default function PollingProcessor(configs, store) {
             pollAfterSleep(startTime, cb)
             cb(err, null)
         })
+
+        // setting sync0 true after first sync
+        if(!store.get('sync0Complete')){
+            store.set('sync0Complete', true);
+        }
+
     }
 
     function pollAfterSleep(startTime, cb) {
