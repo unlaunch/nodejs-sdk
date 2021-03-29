@@ -2,7 +2,9 @@ import objectAssign from 'object-assign'
 
 class Store {
   constructor() {
-    this._unlaunchMap = {};
+    this._unlaunchMap = {
+      sync0Complete: false
+    };
   }
   // set key value in map
   set(key, value) {
