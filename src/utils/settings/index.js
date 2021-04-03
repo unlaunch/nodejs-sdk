@@ -5,7 +5,8 @@ import { merge } from "../../../src/utils/lang/index.js";
 const base = {
   core:{
     sdkKey:'',
-    host:'https://api.unlaunch.io'
+    host:'https://api.unlaunch.io',
+    s3BucketHost : 'https://api-unlaunch-io-master-flags.s3-us-west-1.amazonaws.com',
   },
   intervals: {
     // fetch feature updates each 15 sec
@@ -40,8 +41,11 @@ function fromSecondsToMillis(n) {
 
 function defaults(custom) {
   const withDefaults = merge(base, custom);
+  
+  if (withDefaults.core.host != "https://api.unlaunch.io") {
+    withDefaults.core.s3BucketHost = "https://app-qa-unlaunch-io-master-flags.s3-us-west-1.amazonaws.com";
+  }
 
-  // make sure that no setting is set below its minimum value or is wrong
 	if(withDefaults.intervals.pollingInterval  < base.intervals.pollingInterval){
     withDefaults.intervals.pollingInterval = base.intervals.pollingInterval
   }
