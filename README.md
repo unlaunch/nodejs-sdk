@@ -12,10 +12,16 @@ The Unlaunch Node.js SDK provides a Node.js API to access Unlaunch feature flags
 
 ## Getting Started
 
-Use NPM to install the Unlaunch SDK:
+First install the Node SDK using your package manager. 
 
 ```
 npm install --save unlaunch-node-sdk
+```
+
+Next, import the UnlaunchFactory into your application.
+
+```javascript
+import {UnlaunchFactory} from 'unlaunch-node-sdk';
 ```
 
 Here is a simple example showing how to use the this SDK in your Node.js application.
