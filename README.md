@@ -1,21 +1,35 @@
+# Unlaunch Node.js SDK
+
 ## Overview
-The Unlaunch Node.js SDK provides a Node.js API to access Unlaunch feature flags and other features. 
-Using the SDK, you can easily build Java applications that can evaluate feature flags, dynamic configurations, and more.
+The Unlaunch Node.js SDK provides a Node.js API to access Unlaunch feature flags and other features. Using this SDK, you can easily build Javascript applications that can evaluate feature flags, dynamic configurations, and more.
 
 ### Important Links
 
-- To create feature flags to use with Node SDK, login to your Unlaunch Console at [https://app.unlaunch.io](https://app.unlaunch.io)
+- To create feature flags to use with Node.js SDK, login to your Unlaunch Console at [https://app.unlaunch.io](https://app.unlaunch.io)
 - [Official Guide](https://docs.unlaunch.io/docs/sdks/nodejs-sdk)
 - [Documentation](https://github.com/unlaunch/nodejs-sdk#section-documentation)
 - [Example Project](https://github.com/unlaunch/hello-node)
 
 ## Getting Started
-Here is a simple example.
 
-```$xslt
+First install the Node SDK using your package manager. 
+
+```
+npm install --save unlaunch-node-sdk
+```
+
+Next, import the UnlaunchFactory into your application.
+
+```javascript
+import {UnlaunchFactory} from 'unlaunch-node-sdk';
+```
+
+Here is a simple example showing how to use the this SDK in your Node.js application.
+
+```javascript
 let factory = UnlaunchFactory({
     core:{
-        sdkKey:'prod-sdk-9b6cf021-a1b5-4b30-9b39-533bb0c9f4b3'
+        sdkKey:'INSERT_YOUR_SDK_KEY'
         },
     intervals: {
         // fetch feature updates each 30 sec
