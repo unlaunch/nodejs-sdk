@@ -1,10 +1,10 @@
-import stringApply from "../../src/engine/attributes/string.js";
-import numberApply from "../../src/engine/attributes/number.js";
-import boolApply from "../../src/engine/attributes/bool.js";
-import dateOrDateTimeApply from "../../src/engine/attributes/datetime.js";
-import setApply from "../../src/engine/attributes/set.js";
+const stringApply = require("../../src/engine/attributes/string.js")
+const numberApply = require("../../src/engine/attributes/number.js")
+const boolApply = require("../../src/engine/attributes/bool.js")
+const dateOrDateTimeApply = require("../../src/engine/attributes/datetime.js")
+const setApply = require("../../src/engine/attributes/set.js")
 
-export function apply(attrType, val, userVal, op) {
+const apply = (attrType, val, userVal, op) => {
 
 	switch(attrType) {
 	case "boolean":

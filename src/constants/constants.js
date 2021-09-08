@@ -1,4 +1,4 @@
-export const CONSTANTS = {
+const CONSTANTS = {
   SDK_READY: `Getting ready - Unlaunch SDK`,
   SDK_VARIATION: `SDK - Get Variation`,
   SDK_VARIATION_WITH_CONFIG: `SDK - Get Variation with config`,
@@ -15,3 +15,6 @@ export const CONSTANTS = {
     `and provide it to this SDK. ` +
     `For more information, visit: https://docs.unlaunch.io/docs/sdks/sdk-keys`
 };
+module.exports={
+  CONSTANTS
+}

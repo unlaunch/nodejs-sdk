@@ -1,4 +1,4 @@
-import winston from 'winston';
+const winston = require('winston');
 const { combine, timestamp, label, printf } = winston.format;
 
 const levels = {
@@ -11,8 +11,9 @@ const levels = {
     silly: 6
 };    
 
-const logger = winston.createLogger({
-    level: 'info',
+const logger = (level) =>{
+    return winston.createLogger({
+    level ,
     format:combine(
         timestamp(), 
         printf(({ level, message, timestamp }) => { 
@@ -25,4 +26,6 @@ const logger = winston.createLogger({
     exitOnError: false,
 });
 
-export default logger;
+}
+
+module.exports = logger

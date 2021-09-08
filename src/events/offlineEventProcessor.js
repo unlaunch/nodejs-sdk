@@ -1,6 +1,10 @@
-export default function OfflineEventProcessor() {
-    return {
-      start: () => {},
-      close: () => {},
-    };
-  }
+const OfflineEventProcessor = () => {
+  return {
+    start: () => { },
+    close: () => { },
+  };
+}
+
+module.exports = {
+  OfflineEventProcessor
+}

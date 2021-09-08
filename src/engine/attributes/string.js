@@ -1,4 +1,4 @@
-export default function stringApply(val, userVal, op) {
+const stringApply = (val, userVal, op) => {
 
     if (userVal == null || userVal.constructor.name != "String") {
         throw new Error("Invalid string attribute value.")
@@ -30,4 +30,9 @@ export default function stringApply(val, userVal, op) {
     }
 
     return false
+}
+
+
+module.exports = {
+    default: stringApply
 }

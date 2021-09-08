@@ -1,7 +1,7 @@
 /**
  * Checks if a given value is a string.
  */
-export function isString(val) {
+const isString = (val) => {
   return typeof val === 'string' || val instanceof String;
 }
 
@@ -9,7 +9,7 @@ export function isString(val) {
  * Validates if a value is an object.
  */
 
-export function isObject(obj) {
+const  isObject = (obj) => {
   return obj && typeof obj === 'object' && Object.keys(obj).length !== 0 && obj.constructor === Object;
 }
 
@@ -18,7 +18,7 @@ export function isObject(obj) {
  * Validation: Parameters should always be correct (at least have a target and a source, of type object).
  */
 
-export function merge(source, custom) {
+const merge = (source, custom) => {
   isObject(source) && Object.keys(source).forEach(key => {
     if(custom[key] && isObject(custom[key])){
       Object.keys(custom[key]).forEach(customkey =>{
@@ -28,4 +28,10 @@ export function merge(source, custom) {
   });
 
   return source;
+}
+
+module.exports = {
+  isString,
+  isObject,
+  merge
 }

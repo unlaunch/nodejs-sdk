@@ -18,10 +18,10 @@ First install the Node SDK using your package manager.
 npm install --save unlaunch-node-sdk
 ```
 
-Next, import the UnlaunchFactory into your application.
+Next, require the UnlaunchFactory into your application.
 
 ```javascript
-import {UnlaunchFactory} from 'unlaunch-node-sdk';
+const {UnlaunchFactory} = require('unlaunch-node-sdk');
 ```
 
 Here is a simple example showing how to use the this SDK in your Node.js application.

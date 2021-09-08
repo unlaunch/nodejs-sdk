@@ -1,4 +1,4 @@
-export default class Impression {
+class Impression {
     constructor(createdTime, type, properties, sdk, sdkVersion, secondaryKey, flagKey,userId,variationKey,flagStatus,evaluationReason,machineName, machineIp) {
       
         this.createdTime = createdTime;
@@ -17,3 +17,5 @@ export default class Impression {
         this.machineIp=machineIp;
     }
 }
+
+module.exports =  Impression

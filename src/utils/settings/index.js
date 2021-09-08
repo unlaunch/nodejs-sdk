@@ -1,6 +1,6 @@
-import objectAssign from 'object-assign';
-import logger from "../logger/logger.js";
-import { merge } from "../../../src/utils/lang/index.js";
+const objectAssign = require('object-assign')
+const logger = require("../logger/logger.js")
+const { merge } = require("../../../src/utils/lang/index.js")
 
 const base = {
   core:{
@@ -32,7 +32,7 @@ const base = {
     impressions:'/api/v1/impressions'
   },
   sendImpression:false,
-  logger: logger
+  logger: logger('info')
 };
 
 function fromSecondsToMillis(n) {
@@ -66,6 +66,10 @@ function defaults(custom) {
     withDefaults.intervals.metricsQueueSize = base.intervals.metricsQueueSize
   }
 
+  if(withDefaults.hasOwnProperty(logger)){
+    withDefaults.logger = logger(level)
+  }
+
   withDefaults.intervals.pollingInterval = fromSecondsToMillis(withDefaults.intervals.pollingInterval);
   withDefaults.intervals.metricsFlushInterval = fromSecondsToMillis(withDefaults.intervals.metricsFlushInterval);
   withDefaults.intervals.httpConnectionTimeout = fromSecondsToMillis(withDefaults.intervals.httpConnectionTimeout);
@@ -74,4 +78,8 @@ function defaults(custom) {
   return withDefaults;
 }
 
-export const ConfigsFactory = (configurations) => objectAssign(Object.create({}), defaults(configurations));
+const ConfigsFactory = (configurations) => objectAssign(Object.create({}), defaults(configurations));
+
+module.exports = {
+  ConfigsFactory
+}

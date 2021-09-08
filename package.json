@@ -1,12 +1,11 @@
 {
   "name": "unlaunch-node-sdk",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Unlaunch Server-Side SDK for Node.js",
   "main": "src/client/ulFactory.js",
   "scripts": {
     "test": "mocha"
   },
-  "type": "module",
   "author": "Mahrukh Izhar",
   "license": "ISC",
   "dependencies": {

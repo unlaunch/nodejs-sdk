@@ -1,10 +1,10 @@
-import { CONFIGURATIONS, EVENTS, EVENTS_COUNT } from '../utils/store/constants.js';
-import Events from '../dtos/Events.js'
-import Impression from '../dtos/Impression.js'
-import postMetrics from "../services/events.js";
-import postImpressions from "../services/impressions.js";
+const { CONFIGURATIONS, EVENTS, EVENTS_COUNT } = require('../utils/store/constants.js')
+const Events = require('../dtos/Events.js')
+const Impression = require('../dtos/Impression.js')
+const postMetrics = require("../services/events.js")
+const postImpressions = require("../services/impressions.js")
 
-export default function EventsProcessor(config, storage) {
+const EventsProcessor=(config, storage) =>{
   let settings = storage.get(CONFIGURATIONS)
   let eventsPublishId = false;
   let countPublishId = false;
@@ -22,7 +22,7 @@ export default function EventsProcessor(config, storage) {
       return Promise.resolve;
     }
 
-    config.logger.info(`Pushing ${eventsCount.length} queued count events.`);
+    config.logger.debug(`debug: [Unlaunch] Pushing ${eventsCount.length} queued count events.`);
 
     const data = [];
     eventsCount.map(e => {
@@ -75,7 +75,7 @@ export default function EventsProcessor(config, storage) {
         return Promise.resolve;
       }
 
-      config.logger.info(`Pushing ${events.length} queued impression events.`);
+      config.logger.debug(`debug: [Unlaunch] Pushing ${events.length} queued impression events.`);
   
       if (events.length > 0) {
         postImpressions(
@@ -138,3 +138,5 @@ export default function EventsProcessor(config, storage) {
     }
   };
 };
+
+module.exports = EventsProcessor

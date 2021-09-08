@@ -1,5 +1,5 @@
-import chai from 'chai';
-import numberApply from '../src/engine/attributes/number.js'
+const chai = require('chai')
+const numberApply = require('../src/engine/attributes/number.js')
 const assert = chai.assert;
 
 describe('Number Operators test', () => {

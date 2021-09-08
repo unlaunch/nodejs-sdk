@@ -1,4 +1,4 @@
-export default function dateOrDateTimeApply(val, userVal, op, discardTime){
+const dateOrDateTimeApply = (val, userVal, op, discardTime) => {
 	let v = val
 	let uv = userVal
 
@@ -43,4 +43,9 @@ function tsWithZeroTime(ts){
 	const d = new Date(Number(ts));
 	d.setHours(0,0,0,0);
     return d.getTime();
+}
+
+
+module.exports = {
+    default: dateOrDateTimeApply
 }

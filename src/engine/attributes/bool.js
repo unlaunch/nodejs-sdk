@@ -1,4 +1,4 @@
-export default function boolApply(val, userVal, op){
+boolApply = (val, userVal, op) => {
 
 	if(userVal == null || userVal.constructor.name != "Boolean") {
 		throw new Error("Invalid boolean attribute value");
@@ -14,4 +14,8 @@ export default function boolApply(val, userVal, op){
 	}
 
 	return false
+}
+
+module.exports = {
+    default: boolApply
 }

@@ -1,5 +1,5 @@
-import chai from 'chai';
-import stringApply from '../src/engine/attributes/string.js'
+const chai = require('chai')
+const stringApply = require('../src/engine/attributes/string.js')
 const assert = chai.assert;
 
 const flagString = 'ahiman';

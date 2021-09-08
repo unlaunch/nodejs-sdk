@@ -1,4 +1,4 @@
-export default function numberApply(val, userVal, op) {
+const numberApply = (val, userVal, op) => {
 
     if (userVal == null || userVal.constructor.name != "Number") {
         throw new Error("Invalid number attribute.")
@@ -27,4 +27,7 @@ export default function numberApply(val, userVal, op) {
         default:
             return false
     }
+}
+module.exports = {
+    default: numberApply
 }
