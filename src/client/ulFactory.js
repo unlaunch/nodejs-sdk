@@ -37,4 +37,4 @@ const UnlaunchFactory = (configurations) => {
         },
     }
 } 
-module.exports = { UnlaunchFactory }
+module.exports =  UnlaunchFactory 

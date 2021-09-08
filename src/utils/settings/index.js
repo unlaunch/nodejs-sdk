@@ -32,7 +32,7 @@ const base = {
     impressions:'/api/v1/impressions'
   },
   sendImpression:false,
-  logger: logger('debug')
+  logger: logger('info')
 };
 
 function fromSecondsToMillis(n) {
