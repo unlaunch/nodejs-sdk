@@ -1,7 +1,7 @@
-import objectAssign from 'object-assign'
+const objectAssign = require('object-assign')
 
 class Store {
-  constructor() {
+  constructor(){
     this._unlaunchMap = {
       sync0Complete: false
     };
@@ -50,4 +50,4 @@ class Store {
   }
 }
 
-export default Store;
+module.exports = Store

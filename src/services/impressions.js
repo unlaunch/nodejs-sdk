@@ -1,8 +1,8 @@
-import fetch from 'node-fetch';
-import AbortController from 'abort-controller';
+const fetch  = require('node-fetch')
+const AbortController = require('abort-controller')
 
 const postImpressions = async (host, sdkKey,httpTimeout, data, logger) => {
-    logger.info(`'POST': ${host}/api/v1/impressions`);
+    logger.debug(`debug: [Unlaunch] 'POST': ${host}/api/v1/impressions`);
     const controller = new AbortController();
 
     const timeout = setTimeout(() => {
@@ -20,13 +20,13 @@ const postImpressions = async (host, sdkKey,httpTimeout, data, logger) => {
         body: JSON.stringify(data)
     })
     if (res.status == 200) {
-        logger.info('Successfully pushed impressions');
+        logger.debug('debug: [Unlaunch] Successfully pushed impressions');
     } else {
         throw new Error(body.data);
     }
     }catch (error) {
         if (error.type && error.type == "aborted") {
-            logger.error('Http connection timed out. Request aborted.');
+            logger.debug('debug: [Unlaunch] Http connection timed out. Request aborted.');
         } else {
             throw new Error(error);
         }
@@ -35,4 +35,4 @@ const postImpressions = async (host, sdkKey,httpTimeout, data, logger) => {
     }
 }
 
-export default postImpressions;
+module.exports = postImpressions

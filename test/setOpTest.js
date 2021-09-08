@@ -1,5 +1,5 @@
-import chai from 'chai';
-import setApply from '../src/engine/attributes/set.js'
+const chai = require('chai')
+const setApply = require('../src/engine/attributes/set.js')
 const assert = chai.assert;
 
 describe('Set Operators test', () => {

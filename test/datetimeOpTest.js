@@ -1,5 +1,5 @@
-import chai from 'chai';
-import dateOrDateTimeApply from '../src/engine/attributes/datetime.js'
+const chai = require('chai')
+const dateOrDateTimeApply = require('../src/engine/attributes/datetime.js')
 const assert = chai.assert;
 
 describe('Datetime Operators test', () => {

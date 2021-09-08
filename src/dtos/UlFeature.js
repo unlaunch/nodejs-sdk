@@ -11,4 +11,4 @@ class UnlaunchFeature{
     }
 }
 
-export default UnlaunchFeature
+module.exports =  UnlaunchFeature

@@ -1,6 +1,6 @@
-import getFlags from "../../src/services/flags.js";
+const getFlags = require("../../src/services/flags.js")
 
-export default function PollingProcessor(configs, store) {
+const PollingProcessor = (configs, store) => {
     const processor = {};
     let stopped = false;
     let pollTimeoutId = null;
@@ -17,7 +17,7 @@ export default function PollingProcessor(configs, store) {
             configs.core.host,
             configs.core.sdkKey,
             configs.intervals.httpConnectionTimeout,
-            store.get('lastUpdatedTime') != null ? store.get('lastUpdatedTime') : null ,
+            store.get('lastUpdatedTime') != null ? store.get('lastUpdatedTime') : null,
             configs.logger
         ).then((res) => {
             if (res) {
@@ -27,13 +27,13 @@ export default function PollingProcessor(configs, store) {
             pollAfterSleep(startTime, cb)
             cb(null, { initialized: true })
         }).catch((err) => {
-            configs.logger.error(`Error - ${err.message}`);
+            configs.logger.error(`error: [LaunchDarkly] Received error - ${err.message}`);
             pollAfterSleep(startTime, cb)
             cb(err, null)
         })
 
         // setting sync0 true after first sync
-        if(!store.get('sync0Complete')){
+        if (!store.get('sync0Complete')) {
             store.set('sync0Complete', true);
         }
 
@@ -55,4 +55,6 @@ export default function PollingProcessor(configs, store) {
 
     return processor;
 }
+
+module.exports = PollingProcessor 
 

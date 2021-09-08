@@ -1,9 +1,8 @@
-import fetch from 'node-fetch';
-import AbortController from 'abort-controller';
-import logger from "../utils/logger/logger.js";
+const fetch = require('node-fetch')
+const AbortController = require('abort-controller')
+const logger = require("../utils/logger/logger.js")
 
 const postMetrics = async (host, sdkKey, httpTimeout,events, logger) => {
-    logger.info(`'POST': ${host}/api/v1/events`);
     const controller = new AbortController();
 
     const timeout = setTimeout(() => {
@@ -22,14 +21,14 @@ const postMetrics = async (host, sdkKey, httpTimeout,events, logger) => {
     })
 
     if (res.status == 200) {
-        logger.info('Successfully pushed metrics');
+        logger.debug('debug: [Unlaunch] Successfully pushed metrics');
     } else {
         throw new Error(body.data);
     }
     
     }catch (error) {
         if (error.type && error.type == "aborted") {
-            logger.error('Http connection timed out. Request aborted.');
+            logger.error('error: [Unlaunch] Http connection timed out for metrics. Request aborted.');
         } else {
             throw new Error(error);
         }
@@ -38,4 +37,4 @@ const postMetrics = async (host, sdkKey, httpTimeout,events, logger) => {
     }
 }
 
-export default postMetrics;
+module.exports = postMetrics

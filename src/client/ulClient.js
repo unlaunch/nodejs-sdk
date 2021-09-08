@@ -1,20 +1,20 @@
-import EventEmitter from 'events';
-import PollingProcessor from "../processor/pollingProcessor.js";
-import OfflineProcessor from "../processor/offlineProcessor.js";
-import EventProcessor from "../events/eventProcessor.js";
-import OfflineEventProcessor from "../events/offlineEventProcessor.js";
-import EventsCache from "../storage/eventsCache/InMemory.js";
-import CountCache from "../storage/countCache/InMemory.js";
-import { evaluate } from '../engine/evaluator.js';
-import { isObject } from "../../src/utils/lang/index.js";
-import UlFeature from "../dtos/UlFeature.js";
-import Impression from "../dtos/Impression.js";
-import { READY } from '../utils/store/constants.js';
+const EventEmitter = require('events')
+const PollingProcessor = require("../processor/pollingProcessor.js")
+const OfflineProcessor = require("../processor/offlineProcessor.js")
+const EventProcessor = require("../events/eventProcessor.js")
+const OfflineEventProcessor = require("../events/offlineEventProcessor.js")
+const EventsCache = require("../storage/eventsCache/InMemory.js")
+const CountCache = require("../storage/countCache/InMemory.js")
+const { evaluate } = require('../engine/evaluator.js')
+const { isObject } = require("../../src/utils/lang/index.js")
+const UlFeature = require("../dtos/UlFeature.js")
+const Impression = require("../dtos/Impression.js")
+const { READY } = require('../utils/store/constants.js')
 
 /**
  * Unlaunch Client 
 **/
-export function ulClient(configs, store) {
+const ulClient = (configs, store) => {
 
     const newUnlaunchClient = function () {
         const client = new EventEmitter();
@@ -79,7 +79,7 @@ export function ulClient(configs, store) {
             const isReady = store.get(READY);
 
             if (flagKey == undefined || flagKey.length <= 0) {
-                configs.logger.error('Please provide valid flagKey');
+                configs.logger.error('error: [Unlaunch] Please provide valid flagKey');
                 return new UlFeature(
                     "control",
                     "Feature flag key was empty",
@@ -88,7 +88,7 @@ export function ulClient(configs, store) {
             }
 
             if (identity == undefined || identity.length <= 0) {
-                configs.logger.error('Please provide valid identity')
+                configs.logger.error('error: [Unlaunch] Please provide valid identity')
                 return new UlFeature(
                     "control",
                     "Identity was empty",
@@ -97,7 +97,7 @@ export function ulClient(configs, store) {
             }
 
             if (attributes && Object.keys(attributes).length > 0 && !isObject(attributes)) {
-                configs.logger.error('Please provide valid Unlaunch attributes')
+                configs.logger.error('error: [Unlaunch] Please provide valid Unlaunch attributes')
                 return new UlFeature(
                     "control",
                     "Invalid Unlaunch attribute(s)",
@@ -106,7 +106,7 @@ export function ulClient(configs, store) {
             }
 
             if (offlineMode) {
-                configs.logger.info('Offline mode selected - control served')
+                configs.logger.info('info: [Unlaunch] Offline mode selected - control served')
                 return new UlFeature(
                     "control",
                     "Offline mode selected - control served",
@@ -115,7 +115,7 @@ export function ulClient(configs, store) {
             }
 
             if (!isReady) {
-                configs.logger.warn("The SDK is not ready. Returning the SDK default 'control' " +
+                configs.logger.warn("warn: [Unlaunch] The SDK is not ready. Returning the SDK default 'control' " +
                     "as variation which may not give " +
                     "the right result");
                 return new UlFeature(
@@ -153,7 +153,7 @@ export function ulClient(configs, store) {
 
                 return ulFeature;
             } else {
-                configs.logger.error(`Error flag with flagKey ${flagKey} not found`);
+                configs.logger.error(`error: [Unlaunch] Error flag with flagKey ${flagKey} not found`);
                 return new UlFeature(
                     "control",
                     "Feature flag was not found in memory",
@@ -179,3 +179,4 @@ export function ulClient(configs, store) {
         client: newUnlaunchClient
     }
 }
+module.exports = {ulClient}

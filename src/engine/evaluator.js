@@ -1,8 +1,8 @@
-import UnlaunchFeature from "../../src/dtos/UlFeature.js";
-import { apply } from "../../src/engine/targeting.js";
-import mmh3 from 'murmurhash3';
+const UnlaunchFeature = require("../../src/dtos/UlFeature.js")
+const { apply } = require("../../src/engine/targeting.js")
+const mmh3 = require('murmurhash3')
 
-export function evaluate(flag, identity, attributes = {}, logger) {
+const evaluate = (flag, identity, attributes = {}, logger) => {
     let result = new UnlaunchFeature();
     result.flagKey = flag.key;
     result.variationKey = 'control';
@@ -25,7 +25,7 @@ export function evaluate(flag, identity, attributes = {}, logger) {
 
             return result;
         } else {
-            let {variation,priority} = matchTargetingRules(flag, identity, attributes);
+            let { variation, priority } = matchTargetingRules(flag, identity, attributes);
             if (variation != null) {
                 result.evaluationReason = `Target Rule with priority ${priority} matched.`
                 result.variationKey = variation.key;
@@ -50,12 +50,12 @@ export function evaluate(flag, identity, attributes = {}, logger) {
     }
 }
 
-function getOffVariation(flag, logger) {
+const getOffVariation = (flag, logger) => {
     const index = flag.variations.findIndex(v => v.id == flag.offVariation);
     if (index >= 0) {
         return flag.variations[index];
     } else {
-        logger.info('OffVariation not found');
+        logger.debug('debug: [Unlaunch] OffVariation not found');
     }
 }
 
@@ -64,7 +64,7 @@ const getDefaultRule = (flag, identity) => {
     return getRuleVariation(flag, flag.rules[index].splits, identity)
 }
 
-function variationIfUserInAllowList(flag, identity) {
+const variationIfUserInAllowList = (flag, identity) => {
     let variation = null;
     flag.variations.map((v) => {
         if (v.allowList && v.allowList.length > 0) {
@@ -88,7 +88,7 @@ const sortByProperty = (array, property) => {
     return array;
 }
 
-function matchTargetingRules(flag, identity, attributes) {
+const matchTargetingRules = (flag, identity, attributes) => {
     let variation = null;
     let priority = null;
 
@@ -108,11 +108,11 @@ function matchTargetingRules(flag, identity, attributes) {
             }
         })
         if (matched) {
-             variation =  getRuleVariation(flag, rule.splits, identity);
+            variation = getRuleVariation(flag, rule.splits, identity);
         }
     })
 
-    return {variation, priority};
+    return { variation, priority };
 }
 
 function bucket(key) {
@@ -121,7 +121,7 @@ function bucket(key) {
 }
 
 
-function getRuleVariation(flag, splits, identity) {
+const getRuleVariation = (flag, splits, identity) => {
 
     if (splits.length === 1 && splits[0].rolloutPercentage == 100) {
         // single variation selected
@@ -138,7 +138,7 @@ function getRuleVariation(flag, splits, identity) {
     }
 }
 
-function getVariationIdBySplit(splits, bucketNum) {
+const getVariationIdBySplit = (splits, bucketNum) => {
     let sum = 0;
     let index = -1;
     splits = sortByProperty(splits, 'variationId');
@@ -159,7 +159,7 @@ function getVariationIdBySplit(splits, bucketNum) {
 }
 
 
-function getVariationById(flag, variationId) {
+const getVariationById = (flag, variationId) => {
     const index = flag.variations.findIndex(v => v.id == variationId);
     if (index >= 0) {
         return flag.variations[index];
@@ -168,3 +168,11 @@ function getVariationById(flag, variationId) {
     return null;
 }
 
+module.exports = {
+    evaluate,
+    getOffVariation,
+    getDefaultRule,
+    getRuleVariation,
+    getVariationById,
+    getVariationById
+}

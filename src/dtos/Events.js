@@ -1,6 +1,6 @@
-import Impression from "./Impression.js";
+const Impression =require("./Impression.js")
 
-export default class Event {
+class Event {
     constructor(createdTime,type,key,secondaryKey,properties) {
         this.createdTime = createdTime; // milliseconds
         this.type = type;
@@ -10,3 +10,5 @@ export default class Event {
     }
     
 }
+
+module.exports = Event

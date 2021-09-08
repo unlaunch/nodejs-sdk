@@ -1,5 +1,5 @@
-import fetch from 'node-fetch';
-import AbortController from 'abort-controller';
+const fetch = require('node-fetch')
+const AbortController = require('abort-controller')
 
 const getFlags = async (sync0Complete, s3BucketHost, host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
    
@@ -12,7 +12,7 @@ const getFlags = async (sync0Complete, s3BucketHost, host, sdkKey, httpTimeout, 
 
 
 const sync0FromS3 = async(s3BucketHost, host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
-    logger.info(`'GET': ${s3BucketHost}/${sdkKey}`);
+    logger.debug(`debug: [Unlaunch] 'GET': ${s3BucketHost}/${sdkKey}`);
 
     const controller = new AbortController();
 
@@ -48,9 +48,9 @@ const sync0FromS3 = async(s3BucketHost, host, sdkKey, httpTimeout, lastUpdatedTi
     } catch (error) {
         // Should we even show these errors?
         if (error.type && error.type == "aborted") {
-            logger.error('Http connection timed out. Request aborted.');
+            logger.error('error: [Unlaunch] Http connection timed out. Request aborted.');
         } else {
-            logger.error("Error occurred during initial s3 sync: " + error);
+            logger.error("error: [Unlaunch] Error occurred during initial s3 sync: " + error);
         }
 
         // Fallback to regular sync in case of any error
@@ -62,7 +62,7 @@ const sync0FromS3 = async(s3BucketHost, host, sdkKey, httpTimeout, lastUpdatedTi
 }
 
 const regularServerSync = async(host, sdkKey, httpTimeout, lastUpdatedTime, logger) => {
-    logger.info(`'GET': ${host}/api/v1/flags`);
+    logger.debug(`debug: [Unlaunch] 'GET': ${host}/api/v1/flags`);
   
     const controller = new AbortController();
 
@@ -89,10 +89,10 @@ const regularServerSync = async(host, sdkKey, httpTimeout, lastUpdatedTime, logg
                 "lastUpdatedTime": res.headers.get('Last-modified'),
             };
         } else if (res.status == 304) {
-            logger.info('Polled data from server but there were no new changes')
+            logger.debug('debug: [Unlaunch] Polled data from server but there were no new changes')
         } else if (res.status == 403) {
             logger.info(
-                "The SDK key you provided was rejected by the server and no data was " +
+                "info: [Unlaunch] The SDK key you provided was rejected by the server and no data was " +
                 "returned. All variation evaluations will return 'control'. You must use the correct " +
                 "SDK key for the project and environment you're connecting to. For more " +
                 "information on how to obtain right SDK keys, see: " +
@@ -103,7 +103,7 @@ const regularServerSync = async(host, sdkKey, httpTimeout, lastUpdatedTime, logg
         }
     } catch (error) {
         if (error.type && error.type == "aborted") {
-            logger.error('Http connection timed out. Request aborted.');
+            logger.error('error: [Unlaunch] Http connection timed out. Request aborted.');
         } else {
             throw new Error(error);
         }
@@ -111,4 +111,4 @@ const regularServerSync = async(host, sdkKey, httpTimeout, lastUpdatedTime, logg
         clearTimeout(timeout);
     }
 }
-export default getFlags;
+module.exports = getFlags

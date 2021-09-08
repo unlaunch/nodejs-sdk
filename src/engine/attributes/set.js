@@ -1,6 +1,6 @@
-import "../../../src/engine/helper/setMatcher.js";
+require("../../../src/engine/helper/setMatcher.js")
 
-export default function setApply(val, userVal, op){
+const setApply = (val, userVal, op) => {
 
 	if (userVal == null) {
 		throw new Error("Invalid set attribute value.")
@@ -48,4 +48,8 @@ export default function setApply(val, userVal, op){
 	}
 
 	return false
+}
+
+module.exports = {
+	default: setApply
 }

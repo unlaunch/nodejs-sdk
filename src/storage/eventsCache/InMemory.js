@@ -1,4 +1,4 @@
-import { CONFIGURATIONS, EVENTS, EVENTS_COUNT } from '../../utils/store/constants.js';
+const { CONFIGURATIONS, EVENTS, EVENTS_COUNT } = require('../../utils/store/constants.js')
 
 class EventsCache {
 
@@ -45,4 +45,4 @@ class EventsCache {
     }
 }
 
-export default EventsCache;
+module.exports = EventsCache

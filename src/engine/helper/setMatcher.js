@@ -1,5 +1,5 @@
 
-export default Set.prototype.equals= function(target) {
+ Set.prototype.equals= (target) => {
   
     // Length being the same is the first condition.
     let isEqual = this.size === target.size;
@@ -14,7 +14,7 @@ export default Set.prototype.equals= function(target) {
     return isEqual;
 };
 
-Set.prototype.isSubSet = function(target) {
+Set.prototype.isSubSet = (target) => {
     // if size of this set is greater 
     // than target then it can't be  
     // a subset 
@@ -33,7 +33,7 @@ Set.prototype.isSubSet = function(target) {
     }
 }
 
-Set.prototype.isSuperSet = function(target){
+Set.prototype.isSuperSet = (target) => {
     // if size of this set is less 
     // than target then it can't be  
     //  a superset 
@@ -51,7 +51,7 @@ Set.prototype.isSuperSet = function(target){
     } 
 }
 
-Set.prototype.intersect= function(target) {
+Set.prototype.intersect= (target) => {
     // creating new set to store intersection 
     var intersectionSet = new Set();
 
@@ -68,6 +68,6 @@ Set.prototype.intersect= function(target) {
     return intersectionSet;
 }
 
-Set.prototype.cardinality= function(){
+Set.prototype.cardinality= ()  => {
   return this.size;
 }
