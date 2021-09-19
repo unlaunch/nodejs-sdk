@@ -1,0 +1,5 @@
+language: node_js
+node_js:
+  - 12.18.2
+notifications:
+  slack: crovate:QnF0NqS4HWq69w3HbnaGw777
