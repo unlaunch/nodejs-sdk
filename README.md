@@ -1,4 +1,7 @@
 # Unlaunch Node.js SDK
+| master                                                                                                                | development                                                                                                                |
+|---------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| [![Build Status](https://travis-ci.com/unlaunch/nodejs-sdk.svg?branch=master)](https://travis-ci.com/unlaunch/nodejs-sdk) | [![Build Status](https://travis-ci.com/unlaunch/nodejs-sdk.svg?branch=develop)](https://travis-ci.com/unlaunch/nodejs-sdk) |
 
 ## Overview
 The Unlaunch Node.js SDK provides a Node.js API to access Unlaunch feature flags and other features. Using this SDK, you can easily build Javascript applications that can evaluate feature flags, dynamic configurations, and more.
